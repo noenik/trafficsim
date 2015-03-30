@@ -7,8 +7,8 @@ package TrafficSim;
 public class Car extends Vehicle{
     
     
-    public Car(String make, String model, int Year, String reg)
+    public Car()
     {
-        super(make, model, Year, reg);
+        
     }
 }
