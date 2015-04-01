@@ -17,18 +17,22 @@ import javax.swing.WindowConstants;
  */
 public class DisplayFrame extends JFrame{
     private Simulator s;
+    private Landscape l;
     private JPanel panel;
     
     public DisplayFrame() {
-        this.setSize(600,600);
+        this.setSize(1000,1000);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
         panel = new JPanel();
         s = new Simulator();
+        l = new Landscape();
         
         panel.add(s);
         this.add(panel);
         
+        l.init();
+        s.setLandscape(l);
         s.init();
         
         this.setVisible(true);

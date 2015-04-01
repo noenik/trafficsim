@@ -1,4 +1,4 @@
-package trafficsim;
+package TrafficSim;
 
 import processing.core.*;
 
