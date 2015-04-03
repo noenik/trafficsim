@@ -10,6 +10,7 @@ import processing.core.*;
 public class Landscape extends PApplet {
 
     ArrayList<Square> grid = new ArrayList<>();
+    int gridSize = 10;
 
     public void setup() {
 
@@ -57,25 +58,51 @@ public class Landscape extends PApplet {
         int dir2Color = get(510, 10);
         int innerRAColor = get(560, 560);
         int outerRAColor = get(620, 620);
-        
+
         rectMode(CORNER);
+        int colNum = 0;
         for (int x = 0; x < width; x += 10) {
+            int rowNum = 0;
             for (int y = 0; y < height; y += 10) {
-                if (get(x+5, y+5) == dir1Color) {
-                    grid.add(new Square(x, y, 255));
-                } else if (get(x+5, y+5) == dir2Color) {
-                    grid.add(new Square(x, y, 200));
-                } else if (get(x+5, y+5) == innerRAColor) {
-                    grid.add(new Square(x, y, 150));
-                } else if (get(x+5, y+5) == outerRAColor) {
-                    grid.add(new Square(x, y, 100));
+                boolean add = false;
+                
+                Direction dir;
+                
+                if (get(x + 5, y + 5) == dir1Color) {
+                    
+                    if(x > 600 && x < 300)
+                        dir = Direction.WEST;
+                    else
+                        dir = Direction.SOUTH;
+                    
+                    grid.add(new Square(x, y, colNum, rowNum, gridSize, dir));
+                    
+                } else if (get(x + 5, y + 5) == dir2Color) {
+                    
+                    if(x > 600 && x < 400)
+                        dir = Direction.EAST;
+                    else
+                        dir = Direction.NORTH;
+                    
+                    grid.add(new Square(x, y, colNum, rowNum, gridSize, dir));
+                    
+                } else if (get(x + 5, y + 5) == innerRAColor) {
+                    grid.add(new Square(x, y, colNum, rowNum, gridSize, Direction.WEST));
+                } else if (get(x + 5, y + 5) == outerRAColor) {
+                    grid.add(new Square(x, y, colNum, rowNum, gridSize, Direction.WEST));
                 }
+                rowNum++;
             }
+            colNum++;
         }
-        
-        for(Square s : grid) {
-            fill(s.getR(), 0, 0);
-            rect(s.getxStart(), s.getyStart(), 10, 10);
-        }
+
+//        for (Square s : grid) {
+//            fill(255, 0, 0);
+//            rect(s.getxStart(), s.getyStart(), 10, 10);
+//        }
+    }
+
+    public ArrayList<Square> getGrid() {
+        return grid;
     }
 }
