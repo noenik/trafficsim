@@ -33,36 +33,41 @@ public class Simulator extends PApplet {
     @Override
     public void draw() {
         background(landscape.getLandscape());
-        
+        noFill();
+        if (fl.size() >= 8) {
+            bezier(fl.get(0), fl.get(1), fl.get(2), fl.get(3), fl.get(4), fl.get(5), fl.get(6), fl.get(7));
+        }
+
         imageMode(CENTER);
 
-        for(Square s : landscape.getGrid()) {
+        for (Square s : landscape.getGrid()) {
             s.setOccupant(null);
         }
-        
+
         for (Vehicle v : vehicles) {
-            fill(255,0,0);
+            fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
 //            for(Square s : v.getOccupied())
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
-            
-            if(v.getXCoord() > width + 200 || v.getXCoord() < 200 || 
-                    v.getYCoord() > height + 200 || v.getYCoord() < -200)
+
+            if (v.getXCoord() > width + 200 || v.getXCoord() < 200
+                    || v.getYCoord() > height + 200 || v.getYCoord() < -200) {
                 vehiclesOut.add(v);
-            
+            }
 
         }
-        
-        for(Vehicle out : vehiclesOut) {
-            
-            if(vehicles.contains(out))
+
+        for (Vehicle out : vehiclesOut) {
+
+            if (vehicles.contains(out)) {
                 vehicles.remove(out);
-            
+            }
+
         }
-        
+
         vehiclesOut.clear();
-            
+
     }
 
     public void setLandscape(Landscape landscape) {
@@ -70,9 +75,20 @@ public class Simulator extends PApplet {
         this.landscape = landscape;
 
     }
-    
-    public void mouseClicked() {
-        
+
+    int mouseClicks = 0;
+    ArrayList<Integer> fl = new ArrayList<>();
+
+    public void mousePressed() {
+
+//        if (mouseClicks < 4) {
+//            System.out.println("X: " + mouseX + " Y: " + mouseY);
+//            fl.add(mouseX);
+//            fl.add(mouseY);
+//        } else {
+//            fl.clear();
+//            mouseClicks = 0;
+//        }
         vehicles.add(new Car(landscape.getGrid(), rand));
     }
 

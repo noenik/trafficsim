@@ -3,6 +3,7 @@ package TrafficSim;
 import java.util.ArrayList;
 import java.util.Random;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PImage;
 
 /**
@@ -13,7 +14,9 @@ public abstract class Vehicle extends PApplet {
 
     private float x;
     private float y;
+    private float zToPi;
     private final PImage model;
+    private final PGraphics mg;
     private final Random rand;
     private final ArrayList<Square> grid;
     private ArrayList<Square> currentOccupied;
@@ -28,6 +31,9 @@ public abstract class Vehicle extends PApplet {
         this.grid = grid;
         model = loadImage(modelUrl);
         model.resize(0, 100);
+
+        mg = createGraphics(model.width, model.width);
+
         currentOccupied = new ArrayList<>();
         fieldOfView = new ArrayList<>();
 
@@ -36,12 +42,12 @@ public abstract class Vehicle extends PApplet {
     }
 
     private void initiate() {
+        mg.beginDraw();
 
         int randomInt = rand.nextInt(4);
 
-        imageMode(CENTER);
-        size(model.width, model.width);
-        translate(width / 2, height / 2);
+        mg.imageMode(CENTER);
+        mg.translate(width / 2, height / 2);
 
         switch (randomInt) {
 
@@ -54,23 +60,31 @@ public abstract class Vehicle extends PApplet {
                 x = 425;
                 y = -100;
                 heading = Direction.SOUTH;
-                rotate(HALF_PI);
+                mg.rotate(HALF_PI);
                 break;
             case 2:
                 x = 1100;
                 y = 475;
                 heading = Direction.WEST;
-                rotate(PI);
+                mg.rotate(PI);
                 break;
             case 3:
                 x = 525;
                 y = 1100;
                 heading = Direction.NORTH;
-                rotate(HALF_PI * 3);
+                mg.rotate(HALF_PI * 3);
 
         }
 
-        image(model, 0, 0);
+        mg.image(model, 0, 0);
+        mg.endDraw();
+        
+//        if(heading == Direction.WEST)
+//            zToPi = (float) (Math.PI/2);
+//        else if(heading == Direction.SOUTH)
+//            zToPi = (float) (Math.PI);
+//        else if(heading == Direction.EAST)
+//            zToPi = (float) (3*(Math.PI/2));
 
     }
 
@@ -135,7 +149,7 @@ public abstract class Vehicle extends PApplet {
     protected boolean safeDistance(Square s) {
 
         float distance = dist(x, y, s.getxStart(), s.getyStart());
-        
+
         return (distance > 100 && distance > model.width) || headingOpposite(s.getOccupant().getHeading());
 
     }
@@ -151,13 +165,30 @@ public abstract class Vehicle extends PApplet {
 
     public abstract void act();
 
+    boolean tuuuuurn = false;
+    
     public void drive(float amountX, float amountY) {
 
-        x += amountX;
-        y += amountY;
+        float distFromCenter = dist(500, 500, x, y);
+
+        if (distFromCenter < 200 && distFromCenter > 125 || tuuuuurn) {
+            tuuuuurn = true;
+            x = bezierPoint(701, 458, 358, 282, zToPi);
+            y = bezierPoint(465, 153, 463, 462, zToPi);
+            
+            zToPi += 0.01;
+            
+            if(zToPi > 1)
+                tuuuuurn = false;
+            
+        } else {
+            zToPi = 0;
+            x += amountX;
+            y += amountY;
+        }
 
     }
-    
+
     public Direction getHeading() {
         return heading;
     }
@@ -171,7 +202,7 @@ public abstract class Vehicle extends PApplet {
     }
 
     public PImage getModel() {
-        return this.get();
+        return mg.get();
     }
 
     public ArrayList<Square> getOccupied() {
