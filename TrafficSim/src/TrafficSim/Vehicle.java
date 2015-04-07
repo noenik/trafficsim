@@ -15,7 +15,10 @@ public abstract class Vehicle extends PApplet {
 
     private float x;
     private float y;
+    private float tx;
+    private float ty;
     private float f;
+    private float a;
     private final PImage model;
     private final PGraphics mg;
     private final Random rand;
@@ -40,7 +43,7 @@ public abstract class Vehicle extends PApplet {
         model = loadImage(modelUrl);
         model.resize(0, 100);
 
-        mg = createGraphics(model.width, model.width);
+        mg = createGraphics(200, 200);
 
         currentOccupied = new ArrayList<>();
         fieldOfView = new ArrayList<>();
@@ -59,7 +62,7 @@ public abstract class Vehicle extends PApplet {
         int randomInt = rand.nextInt(4);
 
         mg.imageMode(CENTER);
-        mg.translate(width / 2, height / 2);
+        mg.translate(mg.width / 2, mg.height / 2);
 
         switch (randomInt) {
 
@@ -87,12 +90,11 @@ public abstract class Vehicle extends PApplet {
                 mg.rotate(HALF_PI * 3);
 
         }
-        
-        randomPathFrom(heading);
 
         mg.image(model, 0, 0);
         mg.endDraw();
 
+        randomPathFrom(heading);
 //        if(heading == Direction.WEST)
 //            zToPi = (float) (Math.PI/2);
 //        else if(heading == Direction.SOUTH)
@@ -104,10 +106,10 @@ public abstract class Vehicle extends PApplet {
     private void randomPathFrom(Direction dir) {
 
         int randomNum = rand.nextInt(3);
-        
+
         if (dir == Direction.EAST) {
-            
-            switch(randomNum) {
+
+            switch (randomNum) {
                 case 0:
                     path = Direction.WESTTONORTH;
                     break;
@@ -116,12 +118,11 @@ public abstract class Vehicle extends PApplet {
                     break;
                 case 2:
                     path = Direction.WESTTOEAST;
-            }  
+            }
 
-            
         } else if (dir == Direction.NORTH) {
-            
-            switch(randomNum) {
+
+            switch (randomNum) {
                 case 0:
                     path = Direction.SOUTHTONORTH;
                     break;
@@ -130,11 +131,11 @@ public abstract class Vehicle extends PApplet {
                     break;
                 case 2:
                     path = Direction.SOUTHTOWEST;
-            }  
+            }
 
         } else if (dir == Direction.SOUTH) {
-            
-            switch(randomNum) {
+
+            switch (randomNum) {
                 case 0:
                     path = Direction.NORTHTOEAST;
                     break;
@@ -143,11 +144,11 @@ public abstract class Vehicle extends PApplet {
                     break;
                 case 2:
                     path = Direction.NORTHTOWEST;
-            }  
+            }
 
         } else if (dir == Direction.WEST) {
-            
-            switch(randomNum) {
+
+            switch (randomNum) {
                 case 0:
                     path = Direction.EASTTONORTH;
                     break;
@@ -156,8 +157,8 @@ public abstract class Vehicle extends PApplet {
                     break;
                 case 2:
                     path = Direction.EASTTOWEST;
-            }            
-            
+            }
+
         }
 
     }
@@ -302,8 +303,22 @@ public abstract class Vehicle extends PApplet {
 
             driveThroughCurve(path);
 
+<<<<<<< HEAD
             if (f > 1) {             
                 heading = map.get(path);
+=======
+            mg.beginDraw();
+            mg.imageMode(CENTER);
+            mg.rectMode(CENTER);
+            mg.translate(mg.width / 2, mg.height / 2);
+            mg.background(0, 0);
+            mg.rotate(a);
+            mg.image(model, 0, 0);
+            mg.rect(0, 0, 200, 1);
+            mg.endDraw();
+            
+            if (f > 1) {
+>>>>>>> 3c01148768a934865647e317aa37e1b7e04fb1f8
                 tuuuuurn = false;
             }
             
@@ -331,6 +346,11 @@ public abstract class Vehicle extends PApplet {
 
         x = bezierPoint(startX, c1X, c2X, endX, f);
         y = bezierPoint(startY, c1Y, c2Y, endY, f);
+        tx = bezierTangent(startX, c1X, c2X, endX, f);
+        ty = bezierTangent(startY, c1Y, c2Y, endY, f);
+        
+        a = atan2(ty, tx);
+        a += TWO_PI;
 
         f += 0.01;
 

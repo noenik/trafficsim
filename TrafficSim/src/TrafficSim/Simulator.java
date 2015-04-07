@@ -49,6 +49,7 @@ public class Simulator extends PApplet {
         for (Vehicle v : vehicles) {
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
+            line(width/2, height/2, v.getXCoord(), v.getYCoord());
 //            for(Square s : v.getFOV())
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
