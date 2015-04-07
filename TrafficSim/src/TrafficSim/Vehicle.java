@@ -95,15 +95,15 @@ public abstract class Vehicle extends PApplet {
     
     private void fillPaths() {
         
-        paths.put(Direction.EASTTONORTH, new ArrayList<>());
+        paths.put(Direction.EASTTONORTH, makeArray(703, 464, 620, 423, 540, 365, 530, 292));
         paths.put(Direction.EASTTOSOUTH, makeArray(701, 462, 458, 305, 372, 507, 459, 711));
         paths.put(Direction.EASTTOWEST, makeArray(701, 465, 458, 153, 358, 463, 282, 462));
-        paths.put(Direction.NORTHTOEAST, new ArrayList<>());
-        paths.put(Direction.NORTHTOSOUTH, new ArrayList<>());
-        paths.put(Direction.NORTHTOWEST, new ArrayList<>());
-        paths.put(Direction.SOUTHTOEAST, new ArrayList<>());
-        paths.put(Direction.SOUTHTONORTH, new ArrayList<>());
-        paths.put(Direction.SOUTHTOWEST, new ArrayList<>());
+        paths.put(Direction.NORTHTOEAST, makeArray(455, 304, 327, 642, 572, 617, 698, 542));
+        paths.put(Direction.NORTHTOSOUTH, makeArray(469, 297, 171, 534, 482, 624, 459, 706));
+        paths.put(Direction.NORTHTOWEST, makeArray(462, 301, 450, 387, 385, 453, 299, 464));
+        paths.put(Direction.SOUTHTOEAST, makeArray(535, 703, 550, 613, 610, 556, 698, 537));
+        paths.put(Direction.SOUTHTONORTH, makeArray(535, 699, 801, 401, 543, 402, 537, 287));
+        paths.put(Direction.SOUTHTOWEST, makeArray(526, 697, 847, 498, 501, 157, 297, 470));
         paths.put(Direction.WESTSOUTH, new ArrayList<>());
         paths.put(Direction.WESTTOEAST, new ArrayList<>());
         paths.put(Direction.WESTTONORTH, new ArrayList<>());
@@ -214,16 +214,7 @@ public abstract class Vehicle extends PApplet {
         if (distFromCenter < 200 && distFromCenter > 125 || tuuuuurn) {
             tuuuuurn = true;
             
-//            driveThroughCurve();
             driveThroughCurve(Direction.EASTTOWEST);
-            
-//            driveThroughCurve(Direction.EASTTOSOUTH);
-            
-            
-            
-            
-            
-//            driveThroughCurve(701, 462, 460, 291, 307, 528, 457, 697);
             
 
             if (f > 1) {
