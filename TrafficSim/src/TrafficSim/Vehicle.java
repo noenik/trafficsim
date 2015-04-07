@@ -22,10 +22,11 @@ public abstract class Vehicle extends PApplet {
     private final ArrayList<Square> grid;
     private ArrayList<Square> currentOccupied;
     protected ArrayList<Square> fieldOfView;
-    
+
     private final HashMap<Direction, ArrayList<Float>> paths;
 
     protected Direction heading;
+    protected Direction path;
 
     public Vehicle(String modelUrl, ArrayList<Square> grid, Random rand) {
 
@@ -40,7 +41,7 @@ public abstract class Vehicle extends PApplet {
         currentOccupied = new ArrayList<>();
         fieldOfView = new ArrayList<>();
         paths = new HashMap<>();
-        
+
         fillPaths();
 
         initiate();
@@ -58,7 +59,7 @@ public abstract class Vehicle extends PApplet {
         switch (randomInt) {
 
             case 0:
-                x = -100;
+                x = 100;
                 y = 525;
                 heading = Direction.EAST;
                 break;
@@ -81,6 +82,8 @@ public abstract class Vehicle extends PApplet {
                 mg.rotate(HALF_PI * 3);
 
         }
+        
+        randomPathFrom(heading);
 
         mg.image(model, 0, 0);
         mg.endDraw();
@@ -92,29 +95,90 @@ public abstract class Vehicle extends PApplet {
 //        else if(heading == Direction.EAST)
 //            zToPi = (float) (3*(Math.PI/2));
     }
-    
-    private void fillPaths() {
+
+    private void randomPathFrom(Direction dir) {
+
+        int randomNum = rand.nextInt(3);
         
+        if (dir == Direction.EAST) {
+            
+            switch(randomNum) {
+                case 0:
+                    path = Direction.WESTTONORTH;
+                    break;
+                case 1:
+                    path = Direction.WESTTOSOUTH;
+                    break;
+                case 2:
+                    path = Direction.WESTTOEAST;
+            }  
+
+            
+        } else if (dir == Direction.NORTH) {
+            
+            switch(randomNum) {
+                case 0:
+                    path = Direction.SOUTHTONORTH;
+                    break;
+                case 1:
+                    path = Direction.SOUTHTOEAST;
+                    break;
+                case 2:
+                    path = Direction.SOUTHTOWEST;
+            }  
+
+        } else if (dir == Direction.SOUTH) {
+            
+            switch(randomNum) {
+                case 0:
+                    path = Direction.NORTHTOEAST;
+                    break;
+                case 1:
+                    path = Direction.NORTHTOSOUTH;
+                    break;
+                case 2:
+                    path = Direction.NORTHTOWEST;
+            }  
+
+        } else if (dir == Direction.WEST) {
+            
+            switch(randomNum) {
+                case 0:
+                    path = Direction.EASTTONORTH;
+                    break;
+                case 1:
+                    path = Direction.EASTTOSOUTH;
+                    break;
+                case 2:
+                    path = Direction.EASTTOWEST;
+            }            
+            
+        }
+
+    }
+
+    private void fillPaths() {
+
         paths.put(Direction.EASTTONORTH, makeArray(703, 464, 620, 423, 540, 365, 530, 292));
         paths.put(Direction.EASTTOSOUTH, makeArray(701, 462, 458, 305, 372, 507, 459, 711));
         paths.put(Direction.EASTTOWEST, makeArray(701, 465, 458, 153, 358, 463, 282, 462));
         paths.put(Direction.NORTHTOEAST, makeArray(455, 304, 327, 642, 572, 617, 698, 542));
         paths.put(Direction.NORTHTOSOUTH, makeArray(469, 297, 171, 534, 482, 624, 459, 706));
         paths.put(Direction.NORTHTOWEST, makeArray(462, 301, 450, 387, 385, 453, 299, 464));
-        paths.put(Direction.SOUTHTOEAST, makeArray(535, 703, 550, 613, 610, 556, 698, 537));
+        paths.put(Direction.SOUTHTOEAST, makeArray(535, 703, 550, 613, 610, 556, 710, 537));
         paths.put(Direction.SOUTHTONORTH, makeArray(535, 699, 801, 401, 543, 402, 537, 287));
         paths.put(Direction.SOUTHTOWEST, makeArray(526, 697, 847, 498, 501, 157, 297, 470));
-        paths.put(Direction.WESTSOUTH, new ArrayList<>());
-        paths.put(Direction.WESTTOEAST, new ArrayList<>());
-        paths.put(Direction.WESTTONORTH, new ArrayList<>());
-                
+        paths.put(Direction.WESTTOSOUTH, makeArray(303, 537, 354, 542, 444, 645, 462, 695));
+        paths.put(Direction.WESTTOEAST, makeArray(304, 534, 500, 812, 624, 560, 698, 536));
+        paths.put(Direction.WESTTONORTH, makeArray(305, 539, 547, 825, 831, 543, 536, 302));
+
     }
-    
+
     private ArrayList<Float> makeArray(float startX, float startY, float c1X,
             float c1Y, float c2X, float c2Y, float endX, float endY) {
-        
+
         ArrayList<Float> list = new ArrayList<>();
-        
+
         list.add(startX);
         list.add(startY);
         list.add(c1X);
@@ -123,9 +187,9 @@ public abstract class Vehicle extends PApplet {
         list.add(c2Y);
         list.add(endX);
         list.add(endY);
-        
+
         return list;
-        
+
     }
 
     protected void findFieldOfView() {
@@ -213,9 +277,8 @@ public abstract class Vehicle extends PApplet {
 
         if (distFromCenter < 200 && distFromCenter > 125 || tuuuuurn) {
             tuuuuurn = true;
-            
-            driveThroughCurve(Direction.EASTTOWEST);
-            
+
+            driveThroughCurve(path);
 
             if (f > 1) {
                 tuuuuurn = false;
@@ -232,7 +295,7 @@ public abstract class Vehicle extends PApplet {
     public void driveThroughCurve(Direction dir) {
 
         ArrayList<Float> points = paths.get(dir);
-        
+
         float startX = points.get(0);
         float startY = points.get(1);
         float c1X = points.get(2);
@@ -241,10 +304,10 @@ public abstract class Vehicle extends PApplet {
         float c2Y = points.get(5);
         float endX = points.get(6);
         float endY = points.get(7);
-        
+
         x = bezierPoint(startX, c1X, c2X, endX, f);
         y = bezierPoint(startY, c1Y, c2Y, endY, f);
-        
+
         f += 0.01;
 
     }
