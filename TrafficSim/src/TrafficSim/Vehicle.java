@@ -51,7 +51,7 @@ public abstract class Vehicle extends PApplet {
         map = new HashMap<>();
 
         fillPaths();
-
+        fillHeading();
         initiate();
 
     }
@@ -181,18 +181,18 @@ public abstract class Vehicle extends PApplet {
     }
     
     private void fillHeading() {
-        map.put(Direction.EASTTONORTH, heading.NORTH);
-        map.put(Direction.WESTTONORTH, heading.NORTH);
-        map.put(Direction.SOUTHTONORTH, heading.NORTH);
-        map.put(Direction.EASTTOSOUTH, heading.SOUTH);
-        map.put(Direction.NORTHTOSOUTH, heading.SOUTH);
-        map.put(Direction.WESTTOSOUTH, heading.SOUTH);
-        map.put(Direction.EASTTOWEST, heading.WEST);
-        map.put(Direction.NORTHTOWEST, heading.WEST);
-        map.put(Direction.SOUTHTOWEST, heading.WEST);
-        map.put(Direction.NORTHTOEAST, heading.EAST);
-        map.put(Direction.SOUTHTOEAST, heading.EAST);
-        map.put(Direction.WESTTOEAST, heading.EAST);
+        map.put(Direction.EASTTONORTH, Direction.NORTH);
+        map.put(Direction.WESTTONORTH, Direction.NORTH);
+        map.put(Direction.SOUTHTONORTH, Direction.NORTH);
+        map.put(Direction.EASTTOSOUTH, Direction.SOUTH);
+        map.put(Direction.NORTHTOSOUTH, Direction.SOUTH);
+        map.put(Direction.WESTTOSOUTH, Direction.SOUTH);
+        map.put(Direction.EASTTOWEST, Direction.WEST);
+        map.put(Direction.NORTHTOWEST, Direction.WEST);
+        map.put(Direction.SOUTHTOWEST, Direction.WEST);
+        map.put(Direction.NORTHTOEAST, Direction.EAST);
+        map.put(Direction.SOUTHTOEAST, Direction.EAST);
+        map.put(Direction.WESTTOEAST, Direction.EAST);
         
         
     }
