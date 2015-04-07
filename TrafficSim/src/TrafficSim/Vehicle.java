@@ -21,12 +21,16 @@ public abstract class Vehicle extends PApplet {
     private final Random rand;
     private final ArrayList<Square> grid;
     private ArrayList<Square> currentOccupied;
+    
     protected ArrayList<Square> fieldOfView;
 
     private final HashMap<Direction, ArrayList<Float>> paths;
+    private final HashMap<Direction, Direction> map;
+    
 
     protected Direction heading;
     protected Direction path;
+   
 
     public Vehicle(String modelUrl, ArrayList<Square> grid, Random rand) {
 
@@ -41,6 +45,7 @@ public abstract class Vehicle extends PApplet {
         currentOccupied = new ArrayList<>();
         fieldOfView = new ArrayList<>();
         paths = new HashMap<>();
+        map = new HashMap<>();
 
         fillPaths();
 
@@ -173,6 +178,23 @@ public abstract class Vehicle extends PApplet {
         paths.put(Direction.WESTTONORTH, makeArray(305, 539, 547, 825, 831, 543, 536, 302));
 
     }
+    
+    private void fillHeading() {
+        map.put(Direction.EASTTONORTH, heading.NORTH);
+        map.put(Direction.WESTTONORTH, heading.NORTH);
+        map.put(Direction.SOUTHTONORTH, heading.NORTH);
+        map.put(Direction.EASTTOSOUTH, heading.SOUTH);
+        map.put(Direction.NORTHTOSOUTH, heading.SOUTH);
+        map.put(Direction.WESTTOSOUTH, heading.SOUTH);
+        map.put(Direction.EASTTOWEST, heading.WEST);
+        map.put(Direction.NORTHTOWEST, heading.WEST);
+        map.put(Direction.SOUTHTOWEST, heading.WEST);
+        map.put(Direction.NORTHTOEAST, heading.EAST);
+        map.put(Direction.SOUTHTOEAST, heading.EAST);
+        map.put(Direction.WESTTOEAST, heading.EAST);
+        
+        
+    }
 
     private ArrayList<Float> makeArray(float startX, float startY, float c1X,
             float c1Y, float c2X, float c2Y, float endX, float endY) {
@@ -280,9 +302,11 @@ public abstract class Vehicle extends PApplet {
 
             driveThroughCurve(path);
 
-            if (f > 1) {
+            if (f > 1) {             
+                heading = map.get(path);
                 tuuuuurn = false;
             }
+            
 
         } else {
             f = 0;
