@@ -104,9 +104,9 @@ public abstract class Vehicle extends PApplet {
         paths.put(Direction.SOUTHTOEAST, new ArrayList<>());
         paths.put(Direction.SOUTHTONORTH, new ArrayList<>());
         paths.put(Direction.SOUTHTOWEST, new ArrayList<>());
-        paths.put(Direction.WESTSOUTH, new ArrayList<>());
-        paths.put(Direction.WESTTOEAST, new ArrayList<>());
-        paths.put(Direction.WESTTONORTH, new ArrayList<>());
+        paths.put(Direction.WESTSOUTH, makeArray(303,537,354,542,444,645,462,695));
+        paths.put(Direction.WESTTOEAST, makeArray(304,534,500,812,624,560,698,536));
+        paths.put(Direction.WESTTONORTH, makeArray(305,539,547,825,831,543,536,302));
                 
     }
     
