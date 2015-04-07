@@ -23,16 +23,16 @@ int moved = 0;
         
         if(heading == Direction.NORTH) {
             x = 0;
-            y = -2;
+            y = -4;
         } else if(heading == Direction.EAST) {
-            x = 2;
+            x = 4;
             y = 0;
         } else if(heading == Direction.WEST) {
-            x = -2;
+            x = -4;
             y = 0;
         } else if(heading == Direction.SOUTH) {
             x = 0;
-            y = 2;
+            y = 4;
         }
         
         boolean drive = true;

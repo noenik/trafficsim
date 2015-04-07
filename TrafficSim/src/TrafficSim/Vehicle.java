@@ -1,6 +1,7 @@
 package TrafficSim;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -14,13 +15,15 @@ public abstract class Vehicle extends PApplet {
 
     private float x;
     private float y;
-    private float zToPi;
+    private float f;
     private final PImage model;
     private final PGraphics mg;
     private final Random rand;
     private final ArrayList<Square> grid;
     private ArrayList<Square> currentOccupied;
     protected ArrayList<Square> fieldOfView;
+    
+    private final HashMap<Direction, ArrayList<Float>> paths;
 
     protected Direction heading;
 
@@ -36,6 +39,9 @@ public abstract class Vehicle extends PApplet {
 
         currentOccupied = new ArrayList<>();
         fieldOfView = new ArrayList<>();
+        paths = new HashMap<>();
+        
+        fillPaths();
 
         initiate();
 
@@ -78,14 +84,48 @@ public abstract class Vehicle extends PApplet {
 
         mg.image(model, 0, 0);
         mg.endDraw();
-        
+
 //        if(heading == Direction.WEST)
 //            zToPi = (float) (Math.PI/2);
 //        else if(heading == Direction.SOUTH)
 //            zToPi = (float) (Math.PI);
 //        else if(heading == Direction.EAST)
 //            zToPi = (float) (3*(Math.PI/2));
-
+    }
+    
+    private void fillPaths() {
+        
+        paths.put(Direction.EASTTONORTH, new ArrayList<>());
+        paths.put(Direction.EASTTOSOUTH, makeArray(701, 462, 458, 305, 372, 507, 459, 711));
+        paths.put(Direction.EASTTOWEST, makeArray(701, 465, 458, 153, 358, 463, 282, 462));
+        paths.put(Direction.NORTHTOEAST, new ArrayList<>());
+        paths.put(Direction.NORTHTOSOUTH, new ArrayList<>());
+        paths.put(Direction.NORTHTOWEST, new ArrayList<>());
+        paths.put(Direction.SOUTHTOEAST, new ArrayList<>());
+        paths.put(Direction.SOUTHTONORTH, new ArrayList<>());
+        paths.put(Direction.SOUTHTOWEST, new ArrayList<>());
+        paths.put(Direction.WESTSOUTH, new ArrayList<>());
+        paths.put(Direction.WESTTOEAST, new ArrayList<>());
+        paths.put(Direction.WESTTONORTH, new ArrayList<>());
+                
+    }
+    
+    private ArrayList<Float> makeArray(float startX, float startY, float c1X,
+            float c1Y, float c2X, float c2Y, float endX, float endY) {
+        
+        ArrayList<Float> list = new ArrayList<>();
+        
+        list.add(startX);
+        list.add(startY);
+        list.add(c1X);
+        list.add(c1Y);
+        list.add(c2X);
+        list.add(c2Y);
+        list.add(endX);
+        list.add(endY);
+        
+        return list;
+        
     }
 
     protected void findFieldOfView() {
@@ -166,26 +206,55 @@ public abstract class Vehicle extends PApplet {
     public abstract void act();
 
     boolean tuuuuurn = false;
-    
+
     public void drive(float amountX, float amountY) {
 
         float distFromCenter = dist(500, 500, x, y);
 
         if (distFromCenter < 200 && distFromCenter > 125 || tuuuuurn) {
             tuuuuurn = true;
-            x = bezierPoint(701, 458, 358, 282, zToPi);
-            y = bezierPoint(465, 153, 463, 462, zToPi);
             
-            zToPi += 0.01;
+//            driveThroughCurve();
+            driveThroughCurve(Direction.EASTTOWEST);
             
-            if(zToPi > 1)
+//            driveThroughCurve(Direction.EASTTOSOUTH);
+            
+            
+            
+            
+            
+//            driveThroughCurve(701, 462, 460, 291, 307, 528, 457, 697);
+            
+
+            if (f > 1) {
                 tuuuuurn = false;
-            
+            }
+
         } else {
-            zToPi = 0;
+            f = 0;
             x += amountX;
             y += amountY;
         }
+
+    }
+
+    public void driveThroughCurve(Direction dir) {
+
+        ArrayList<Float> points = paths.get(dir);
+        
+        float startX = points.get(0);
+        float startY = points.get(1);
+        float c1X = points.get(2);
+        float c1Y = points.get(3);
+        float c2X = points.get(4);
+        float c2Y = points.get(5);
+        float endX = points.get(6);
+        float endY = points.get(7);
+        
+        x = bezierPoint(startX, c1X, c2X, endX, f);
+        y = bezierPoint(startY, c1Y, c2Y, endY, f);
+        
+        f += 0.01;
 
     }
 

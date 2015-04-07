@@ -25,8 +25,10 @@ public class Simulator extends PApplet {
         size(1000, 1000);
         car = loadImage("graphics/bil1.png");
         car.resize(100, 0);
+        
+        frameRate(25);
 
-        vehicles.add(new Car(landscape.getGrid(), rand));
+//        vehicles.add(new Car(landscape.getGrid(), rand));
 //        noLoop();
     }
 
@@ -47,7 +49,7 @@ public class Simulator extends PApplet {
         for (Vehicle v : vehicles) {
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
-//            for(Square s : v.getOccupied())
+//            for(Square s : v.getFOV())
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
