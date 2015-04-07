@@ -302,12 +302,7 @@ public abstract class Vehicle extends PApplet {
             tuuuuurn = true;
 
             driveThroughCurve(path);
-
-<<<<<<< HEAD
-            if (f > 1) {             
-                heading = map.get(path);
-=======
-            mg.beginDraw();
+ mg.beginDraw();
             mg.imageMode(CENTER);
             mg.rectMode(CENTER);
             mg.translate(mg.width / 2, mg.height / 2);
@@ -316,9 +311,9 @@ public abstract class Vehicle extends PApplet {
             mg.image(model, 0, 0);
             mg.rect(0, 0, 200, 1);
             mg.endDraw();
-            
-            if (f > 1) {
->>>>>>> 3c01148768a934865647e317aa37e1b7e04fb1f8
+
+            if (f > 1) {             
+                heading = map.get(path);
                 tuuuuurn = false;
             }
             
