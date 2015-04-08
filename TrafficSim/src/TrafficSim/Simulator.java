@@ -54,7 +54,7 @@ public class Simulator extends PApplet {
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
-            if (v.getXCoord() > width + 200 || v.getXCoord() < 200
+            if (v.getXCoord() > width + 200 || v.getXCoord() < -200
                     || v.getYCoord() > height + 200 || v.getYCoord() < -200) {
                 vehiclesOut.add(v);
             }
