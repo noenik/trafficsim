@@ -202,7 +202,7 @@ public abstract class Vehicle extends PApplet {
         paths.put(Direction.SOUTHTOWEST, makeArray(526, 697, 847, 498, 501, 157, 297, 470));
         paths.put(Direction.WESTTOSOUTH, makeArray(303, 537, 354, 542, 444, 645, 462, 695));
         paths.put(Direction.WESTTOEAST, makeArray(304, 534, 500, 812, 624, 560, 698, 536));
-        paths.put(Direction.WESTTONORTH, makeArray(305, 539, 547, 825, 831, 543, 536, 302));
+        paths.put(Direction.WESTTONORTH, makeArray(301, 532, 678, 686, 638, 412, 534, 304));
 
     }
 

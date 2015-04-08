@@ -84,14 +84,14 @@ public class Simulator extends PApplet {
 
     public void mousePressed() {
 
-//        if (mouseClicks < 4) {
-//            System.out.print(mouseX + ", " + mouseY + ", ");
-//            fl.add(mouseX);
-//            fl.add(mouseY);
-//        } else {
-//            fl.clear();
-//            mouseClicks = 0;
-//        }
+      //  if (mouseClicks < 4) {
+     //       System.out.print(mouseX + ", " + mouseY + ", ");
+     //       fl.add(mouseX);
+     //       fl.add(mouseY);
+     //   } else {
+     //       fl.clear();
+     //       mouseClicks = 0;
+       // }
         vehicles.add(new Car(landscape.getGrid(), rand));
     }
 
