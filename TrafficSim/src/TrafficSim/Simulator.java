@@ -54,7 +54,7 @@ public class Simulator extends PApplet {
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
-            if (v.getXCoord() > width + 200 || v.getXCoord() < 200
+            if (v.getXCoord() > width + 200 || v.getXCoord() < -200
                     || v.getYCoord() > height + 200 || v.getYCoord() < -200) {
                 vehiclesOut.add(v);
             }
@@ -84,14 +84,14 @@ public class Simulator extends PApplet {
 
     public void mousePressed() {
 
-//        if (mouseClicks < 4) {
-//            System.out.print(mouseX + ", " + mouseY + ", ");
-//            fl.add(mouseX);
-//            fl.add(mouseY);
-//        } else {
-//            fl.clear();
-//            mouseClicks = 0;
-//        }
+      //  if (mouseClicks < 4) {
+     //       System.out.print(mouseX + ", " + mouseY + ", ");
+     //       fl.add(mouseX);
+     //       fl.add(mouseY);
+     //   } else {
+     //       fl.clear();
+     //       mouseClicks = 0;
+       // }
         vehicles.add(new Car(landscape.getGrid(), rand));
     }
 
