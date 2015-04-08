@@ -71,35 +71,26 @@ public abstract class Vehicle extends PApplet {
         switch (randomInt) {
 
             case 0:
-                x = -100;
+                x = -200;
                 y = 525;
-                xEnd = width;
-                yEnd = 525;
                 setOrientation(Direction.EAST, true);
                 break;
             case 1:
                 x = 425;
-                y = -100;
-                xEnd = 425;
-                yEnd = height;
+                y = -200;
                 setOrientation(Direction.SOUTH, true);
                 break;
             case 2:
-                x = 1100;
+                x = 1200;
                 y = 475;
-                xEnd = 0;
-                yEnd = 475;
                 setOrientation(Direction.WEST, true);
                 break;
             case 3:
                 x = 525;
-                y = 1100;
-                xEnd = 525;
-                yEnd = 0;
+                y = 1200;
                 setOrientation(Direction.NORTH, true);
 
         }
-
         mg.image(model, 0, 0);
         mg.endDraw();
 
@@ -115,12 +106,21 @@ public abstract class Vehicle extends PApplet {
     private void setOrientation(Direction dir, boolean rotate) {
         amount = 0;
 
-        if (dir == Direction.WEST) {
+        if (dir == Direction.EAST){
+            xEnd = 1000;
+            yEnd = 532;
+        } else if (dir == Direction.WEST) {
             amount = PI;
+            xEnd = 0;
+            yEnd = 468;
         } else if (dir == Direction.NORTH) {
             amount = HALF_PI * 3;
+            xEnd = 532;
+            yEnd = 0;
         } else if (dir == Direction.SOUTH) {
             amount = HALF_PI;
+            xEnd = 468;
+            yEnd = 1000;
         }
 
         if (rotate) {
@@ -324,7 +324,7 @@ public abstract class Vehicle extends PApplet {
 
         float distFromCenter = dist(500, 500, x, y);
 
-        if (distFromCenter < 200 && distFromCenter > 125 || turn) {
+        if (!end && distFromCenter < 200 && distFromCenter > 125 || turn) {
             turn = true;
 
             mg.beginDraw();
@@ -332,8 +332,10 @@ public abstract class Vehicle extends PApplet {
             mg.translate(mg.width / 2, mg.height / 2);
             mg.background(0, 0);
 
-            if (!driveThroughCurve(paths.get(path))) {
+            if (!driveThroughCurve(paths.get(path), 0.01f)) {
                 setOrientation(map.get(path), true);
+                makeEndCurve(paths.get(path).get(6), paths.get(path).get(7));
+                f = 0;
                 end = true;
                 turn = false;
             } else {
@@ -344,22 +346,21 @@ public abstract class Vehicle extends PApplet {
             mg.endDraw();
 
         } else if (end) {
-            f = 0;
-            
+
             mg.beginDraw();
             mg.imageMode(CENTER);
             mg.translate(mg.width / 2, mg.height / 2);
             mg.background(0, 0);
-            
-            if(!driveThroughCurve(endCurve)) {
+
+            if (!driveThroughCurve(endCurve, 0.1f)) {
                 end = false;
             } else {
                 mg.rotate(a);
             }
-            
+
             mg.image(model, 0, 0);
             mg.endDraw();
-            
+
         } else {
             f = 0;
             x += amountX;
@@ -367,11 +368,8 @@ public abstract class Vehicle extends PApplet {
         }
     }
 
-    private boolean driveThroughCurve(ArrayList<Float> points) {
+    private boolean driveThroughCurve(ArrayList<Float> points, float speed) {
 
-        float endX = 0;
-        float endY = 0;
-        
         if (f < 1) {
             float startX = points.get(0);
             float startY = points.get(1);
@@ -379,8 +377,8 @@ public abstract class Vehicle extends PApplet {
             float c1Y = points.get(3);
             float c2X = points.get(4);
             float c2Y = points.get(5);
-            endX = points.get(6);
-            endY = points.get(7);
+            float endX = points.get(6);
+            float endY = points.get(7);
 
             x = bezierPoint(startX, c1X, c2X, endX, f);
             y = bezierPoint(startY, c1Y, c2Y, endY, f);
@@ -389,49 +387,48 @@ public abstract class Vehicle extends PApplet {
 
             a = atan2(ty, tx);
 
-            f += 0.01;
+            f += speed;
 
             return true;
 
         } else {
-            makeEndCurve(endX, endY);
             return false;
         }
 
     }
 
     private void makeEndCurve(float pointX, float pointY) {
-
+        System.out.println("X: " + xEnd + " Y: " + yEnd);
         float space = dist(pointX, pointY, xEnd, yEnd) / 3;
         endCurve.add(pointX);
         endCurve.add(pointY);
 
         if (heading == Direction.EAST) {
-            
+
             endCurve.add(pointX + space);
-            endCurve.add(yEnd + (rand.nextInt(10) - 5));
+            endCurve.add(yEnd + (rand.nextInt(14) - 7));
             endCurve.add(pointX + (2 * space));
-            endCurve.add(yEnd + (rand.nextInt(10) - 5));
-            
+            endCurve.add(yEnd + (rand.nextInt(14) - 7));
+
         } else if (heading == Direction.WEST) {
 
             endCurve.add(pointX - space);
-            endCurve.add(yEnd + (rand.nextInt(10) - 5));
+            endCurve.add(yEnd + (rand.nextInt(14) - 7));
             endCurve.add(pointX - (2 * space));
-            endCurve.add(yEnd + (rand.nextInt(10) - 5));
-            
+            endCurve.add(yEnd + (rand.nextInt(14) - 7));
+
         } else if (heading == Direction.NORTH) {
-            
-            endCurve.add(xEnd + (rand.nextInt(10) - 5));
+
+            endCurve.add(xEnd + (rand.nextInt(14) - 7));
             endCurve.add(pointY - space);
-            endCurve.add(xEnd + (rand.nextInt(10) - 5));
+            endCurve.add(xEnd + (rand.nextInt(14) - 7));
             endCurve.add(pointY - (2 * space));
 
         } else if (heading == Direction.SOUTH) {
-            
-            endCurve.add(xEnd + (rand.nextInt(10) - 5));
+
+            endCurve.add(xEnd + (rand.nextInt(14) - 7));
             endCurve.add(pointY + space);
-            endCurve.add(xEnd + (rand.nextInt(10) - 5));
+            endCurve.add(xEnd + (rand.nextInt(14) - 7));
             endCurve.add(pointY + (2 * space));
 
         }
@@ -463,5 +460,9 @@ public abstract class Vehicle extends PApplet {
 
     public ArrayList<Square> getFOV() {
         return fieldOfView;
+    }
+
+    public ArrayList<Float> getCurve() {
+        return endCurve;
     }
 }
