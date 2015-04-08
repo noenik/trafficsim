@@ -12,6 +12,9 @@ public class Simulator extends PApplet {
 
     ArrayList<Vehicle> vehicles = new ArrayList<>();
     ArrayList<Vehicle> vehiclesOut = new ArrayList<>();
+    
+    ArrayList<Person> persons = new ArrayList<>();
+    ArrayList<Person> personsOut = new ArrayList<>();
 
     Random rand = new Random();
     Landscape landscape;
@@ -49,7 +52,7 @@ public class Simulator extends PApplet {
         for (Vehicle v : vehicles) {
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
-            line(width/2, height/2, v.getXCoord(), v.getYCoord());
+            //line(width/2, height/2, v.getXCoord(), v.getYCoord());
 //            for(Square s : v.getFOV())
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
@@ -60,6 +63,17 @@ public class Simulator extends PApplet {
             }
 
         }
+        
+        for (Person p : persons) {
+            fill(255, 0, 0);
+            image(p.getSprite(), p.getXCoord(), p.getYCoord());
+            p.act();
+            
+            if (p.getXCoord() > width + 40 || p.getXCoord() < -40
+                    || p.getYCoord() > height + 40 || p.getYCoord() < -40) {
+                personsOut.add(p);
+            }
+        }
 
         for (Vehicle out : vehiclesOut) {
 
@@ -68,8 +82,16 @@ public class Simulator extends PApplet {
             }
 
         }
+        for (Person out : personsOut) {
+
+            if (persons.contains(out)) {
+                persons.remove(out);
+            }
+
+        }
 
         vehiclesOut.clear();
+        personsOut.clear();
 
     }
 
@@ -93,6 +115,7 @@ public class Simulator extends PApplet {
      //       mouseClicks = 0;
        // }
         vehicles.add(new Car(landscape.getGrid(), rand));
+        persons.add(new Person(rand));
     }
 
 }
