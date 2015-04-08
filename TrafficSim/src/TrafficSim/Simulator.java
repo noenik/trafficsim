@@ -54,6 +54,10 @@ public class Simulator extends PApplet {
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
+            if(!v.getCurve().isEmpty()){
+            ArrayList<Float> curve = v.getCurve();
+            bezier(curve.get(0), curve.get(1), curve.get(2), curve.get(3), curve.get(4), curve.get(5), curve.get(6), curve.get(7));
+            }
             if (v.getXCoord() > width + 200 || v.getXCoord() < -200
                     || v.getYCoord() > height + 200 || v.getYCoord() < -200) {
                 vehiclesOut.add(v);
