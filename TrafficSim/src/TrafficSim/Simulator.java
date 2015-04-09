@@ -1,5 +1,7 @@
 package TrafficSim;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 import processing.core.*;
@@ -8,7 +10,7 @@ import processing.core.*;
  *
  * @author nikla_000
  */
-public class Simulator extends PApplet {
+public class Simulator extends PApplet implements ActionListener {
 
     ArrayList<Vehicle> vehicles = new ArrayList<>();
     ArrayList<Vehicle> vehiclesOut = new ArrayList<>();
@@ -122,4 +124,18 @@ public class Simulator extends PApplet {
         persons.add(new Person(rand));
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "start":
+                
+                break;
+            case "stop":
+                
+                break;
+            case "Resume":
+                noLoop();
+                break;
+}
+    }
 }
