@@ -56,8 +56,8 @@ public class DisplayFrame extends JFrame{
      panel2.setLocationRelativeTo(this);
      panel2.setLayout(new FlowLayout());
      JButton startSim = new JButton("Start");
-     JButton vehicle = new JButton("POPULATECARS");
-     JButton people = new JButton("POPULATEPEOPLE");
+     JButton vehicle = new JButton("Populatevehicles");
+     JButton people = new JButton("Populatepeople");
      JButton stopSim = new JButton("Stop");
      JButton resume = new JButton("Resume");
      JButton customStart = new JButton("CustomStart");
@@ -84,6 +84,12 @@ public class DisplayFrame extends JFrame{
         stopSim.addActionListener(s);
         stopSim.setActionCommand("Resume");
         
+        vehicle.addActionListener(s);
+        vehicle.setActionCommand("Populatevehicles");
+        
+        people.addActionListener(s);
+        people.setActionCommand("Populatepeople");
+        
          
         customStart.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -93,10 +99,7 @@ public class DisplayFrame extends JFrame{
             }
         });
      
-       vehicle.addActionListener((ActionEvent e) -> {
-       System.out.println("Add vehicles");
-       
-       });
+        
        
      
        
@@ -122,9 +125,6 @@ public class DisplayFrame extends JFrame{
         }
     }
    
-   private void populate() {
-       
-   }
    
 }
 

@@ -123,6 +123,14 @@ public class Simulator extends PApplet implements ActionListener {
         vehicles.add(new Car(landscape.getGrid(), rand));
         persons.add(new Person(rand));
     }
+    
+    public void popVehicles() {
+        vehicles.add(new Car(landscape.getGrid(), rand));
+    }
+    
+    public void popPeople() {
+        persons.add(new Person(rand));
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -135,6 +143,12 @@ public class Simulator extends PApplet implements ActionListener {
                 break;
             case "Resume":
                 noLoop();
+                break;
+            case "Populatevehicles":
+                popVehicles();
+                break;
+            case "Populatepeople":
+                popPeople();
                 break;
 }
     }
