@@ -107,8 +107,8 @@ public class DisplayFrame extends JFrame {
 
         if (result == JOptionPane.OK_OPTION) {
             try {
-                s.setvehicleRate(Integer.parseInt(vehicleField.getText()));
-                s.setpoepleRate(Integer.parseInt(peopleField.getText()));
+                s.setVehicleRate(Integer.parseInt(vehicleField.getText()));
+                s.setPeopleRate(Integer.parseInt(peopleField.getText()));
 
             } catch (NumberFormatException e) {
                 int result2 = JOptionPane.showConfirmDialog(null, "Make sure all values are numbers", "CRITICAL ERROR", JOptionPane.OK_CANCEL_OPTION);
