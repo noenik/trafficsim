@@ -12,7 +12,7 @@ public class Simulator extends PApplet {
 
     ArrayList<Vehicle> vehicles = new ArrayList<>();
     ArrayList<Vehicle> vehiclesOut = new ArrayList<>();
-    
+
     ArrayList<Person> persons = new ArrayList<>();
     ArrayList<Person> personsOut = new ArrayList<>();
 
@@ -22,14 +22,18 @@ public class Simulator extends PApplet {
     PImage car;
     float x = 0;
     float y = 500;
+    int currentFr = 25;
+
+    int vehicleRate = 2;
+    int peopleRate = 2;
 
     @Override
     public void setup() {
         size(1000, 1000);
         car = loadImage("graphics/bil1.png");
         car.resize(100, 0);
-        
-        frameRate(25);
+
+        frameRate(currentFr);
 
 //        vehicles.add(new Car(landscape.getGrid(), rand));
 //        noLoop();
@@ -37,6 +41,11 @@ public class Simulator extends PApplet {
 
     @Override
     public void draw() {
+        if (frameCount % currentFr * 2 == 0) {
+            vehicles.add(new Car(landscape.getGrid(), rand));
+            System.out.println("lel");
+        }
+
         background(landscape.getLandscape());
         noFill();
         if (fl.size() >= 8) {
@@ -53,26 +62,22 @@ public class Simulator extends PApplet {
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
             //line(width/2, height/2, v.getXCoord(), v.getYCoord());
-//            for(Square s : v.getFOV())
+//            for(Square s : v.getOccupied())
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
-            if(!v.getCurve().isEmpty()){
-            ArrayList<Float> curve = v.getCurve();
-            bezier(curve.get(0), curve.get(1), curve.get(2), curve.get(3), curve.get(4), curve.get(5), curve.get(6), curve.get(7));
-            }
             if (v.getXCoord() > width + 200 || v.getXCoord() < -200
                     || v.getYCoord() > height + 200 || v.getYCoord() < -200) {
                 vehiclesOut.add(v);
             }
 
         }
-        
+
         for (Person p : persons) {
             fill(255, 0, 0);
             image(p.getSprite(), p.getXCoord(), p.getYCoord());
             p.act();
-            
+
             if (p.getXCoord() > width + 40 || p.getXCoord() < -40
                     || p.getYCoord() > height + 40 || p.getYCoord() < -40) {
                 personsOut.add(p);
@@ -105,19 +110,27 @@ public class Simulator extends PApplet {
 
     }
 
+    public void setVehicleRate(int rate) {
+        vehicleRate = rate;
+    }
+    
+    public void setPeopleRate(int rate) {
+        peopleRate = rate;
+    }
+
     int mouseClicks = 0;
     ArrayList<Integer> fl = new ArrayList<>();
 
     public void mousePressed() {
 
       //  if (mouseClicks < 4) {
-     //       System.out.print(mouseX + ", " + mouseY + ", ");
-     //       fl.add(mouseX);
-     //       fl.add(mouseY);
-     //   } else {
-     //       fl.clear();
-     //       mouseClicks = 0;
-       // }
+        //       System.out.print(mouseX + ", " + mouseY + ", ");
+        //       fl.add(mouseX);
+        //       fl.add(mouseY);
+        //   } else {
+        //       fl.clear();
+        //       mouseClicks = 0;
+        // }
         vehicles.add(new Car(landscape.getGrid(), rand));
         persons.add(new Person(rand));
     }

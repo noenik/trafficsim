@@ -44,6 +44,29 @@ public class Landscape extends PApplet {
         ellipse(width / 2, height / 2, 100, 100);
 
         makeGrid();
+        
+        rectMode(CENTER);
+        fill(255); 
+        rect(440, 200, 20, 80); 
+        rect(470, 200, 20, 80); 
+        rect(500, 200, 20, 80); 
+        rect(530, 200, 20, 80); 
+        rect(560, 200, 20, 80); 
+        rect(440, 800, 20, 80); 
+        rect(470, 800, 20, 80); 
+        rect(500, 800, 20, 80); 
+        rect(530, 800, 20, 80); 
+        rect(560, 800, 20, 80); 
+        rect(200, 440, 80, 20); 
+        rect(200, 470, 80, 20); 
+        rect(200, 500, 80, 20); 
+        rect(200, 530, 80, 20); 
+        rect(200, 560, 80, 20); 
+        rect(800, 440, 80, 20); 
+        rect(800, 470, 80, 20); 
+        rect(800, 500, 80, 20); 
+        rect(800, 530, 80, 20); 
+        rect(800, 560, 80, 20);
     }
 
     public PImage getLandscape() {

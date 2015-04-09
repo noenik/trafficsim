@@ -11,7 +11,7 @@ public class MC extends Vehicle{
     
     
     public MC(ArrayList<Square> grid, Random rand) {
-        super("graphics/bil1.png", grid, rand);
+        super("graphics/bil1.png", grid, rand, 0.01f);
     }
 
     @Override
