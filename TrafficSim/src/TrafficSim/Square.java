@@ -14,6 +14,7 @@ public class Square {
     private Direction direction;
 
     private Vehicle occupant;
+    private Person pedestrian;
 
     public Square(float x, float y, int colNum, int rowNum, int size, Direction dir) {
 
@@ -38,6 +39,10 @@ public class Square {
     public void setOccupant(Vehicle v) {
         occupant = v;
     }
+    
+    public void setPedestrian(Person p) {
+        pedestrian = p;
+    }
 
     public float getxStart() {
         return xStart;
@@ -61,6 +66,10 @@ public class Square {
 
     public Vehicle getOccupant() {
         return occupant;
+    }
+    
+    public Person getPedestrian() {
+        return pedestrian;
     }
 
     public Direction getDirection() {
