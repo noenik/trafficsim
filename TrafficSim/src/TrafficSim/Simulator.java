@@ -24,7 +24,7 @@ public class Simulator extends PApplet implements ActionListener {
     PImage car;
     float x = 0;
     float y = 500;
-
+  
     @Override
     public void setup() {
         size(1000, 1000);

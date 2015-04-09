@@ -8,6 +8,7 @@ package TrafficSim;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -106,8 +107,8 @@ public class DisplayFrame extends JFrame {
 
         if (result == JOptionPane.OK_OPTION) {
             try {
-                int vehicleValue = Integer.parseInt(vehicleField.getText());
-                int peopleValue = Integer.parseInt(peopleField.getText());
+                s.setvehicleRate(Integer.parseInt(vehicleField.getText()));
+                s.setpoepleRate(Integer.parseInt(peopleField.getText()));
 
             } catch (NumberFormatException e) {
                 int result2 = JOptionPane.showConfirmDialog(null, "Make sure all values are numbers", "CRITICAL ERROR", JOptionPane.OK_CANCEL_OPTION);
@@ -115,5 +116,5 @@ public class DisplayFrame extends JFrame {
             }
         }
     }
-
+    
 }
