@@ -1,5 +1,6 @@
 package TrafficSim;
 
+import java.util.ArrayList;
 import java.util.Random;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -25,9 +26,11 @@ public class Person extends PApplet {
     private int actCount;
     private final PGraphics mp;
     private final Random rand;
+    private final ArrayList<Crossing> crossings;
     protected Direction heading;
+    private boolean inCrossing;
 
-    public Person(Random rand) {
+    public Person(ArrayList<Crossing> crossingsX, Random rand) {
         init();
         mp = createGraphics(200, 200);
         sprite1 = loadImage("graphics/sprite1.png");
@@ -40,7 +43,8 @@ public class Person extends PApplet {
         actCount = 0;
         xCoord = 20;
         yCoord = 20;
-        
+        crossings = crossingsX;
+        inCrossing = false;
         this.rand = rand;
         initiate();
     }
@@ -185,6 +189,13 @@ public class Person extends PApplet {
         }
         if(yStart > yEnd) {
             yCoord--;
+        }
+        
+        for(Crossing c : crossings){
+            if(xCoord >= c.getXStart() && xCoord <= c.getXEnd() && yCoord >= c.getYStart() && yCoord <= c.getYEnd()) {
+                c.addOccupant(this);
+                //System.out.println("occu: " + c.getNumberOfOccupants());
+            }
         }
     }
 

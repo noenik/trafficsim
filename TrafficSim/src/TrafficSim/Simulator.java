@@ -10,14 +10,16 @@ import processing.core.*;
  *
  * @author nikla_000
  */
-public class Simulator extends PApplet implements ActionListener {
+public class Simulator extends PApplet implements ActionListener{
 
     ArrayList<Vehicle> vehicles = new ArrayList<>();
     ArrayList<Vehicle> vehiclesOut = new ArrayList<>();
-
+    
     ArrayList<Person> persons = new ArrayList<>();
     ArrayList<Person> personsOut = new ArrayList<>();
 
+    
+    ArrayList<Crossing> crossings = new ArrayList<>();
     Random rand = new Random();
     Landscape landscape;
     PImage landscapeImage;
@@ -26,25 +28,26 @@ public class Simulator extends PApplet implements ActionListener {
     float y = 500;
     int currentFr = 25;
     int vehicleRate = 2;
-    int peopleRate = 2;
+
     @Override
     public void setup() {
         size(1000, 1000);
         car = loadImage("graphics/bil1.png");
         car.resize(100, 0);
-
         frameRate(currentFr);
-        noLoop();
+        crossings = landscape.getCrossings();
+        
 //        vehicles.add(new Car(landscape.getGrid(), rand));
 //        noLoop();
     }
 
     @Override
     public void draw() {
+
         if (frameCount % currentFr * vehicleRate == 0) {
             vehicles.add(new Car(landscape.getGrid(), rand));
         }
-
+        
         background(landscape.getLandscape());
         noFill();
         if (fl.size() >= 8) {
@@ -57,6 +60,18 @@ public class Simulator extends PApplet implements ActionListener {
             s.setOccupant(null);
         }
 
+        
+        for (Person p : persons) {
+            fill(255, 0, 0);
+            image(p.getSprite(), p.getXCoord(), p.getYCoord());
+            p.act();
+            
+            if (p.getXCoord() > width + 40 || p.getXCoord() < -40
+                    || p.getYCoord() > height + 40 || p.getYCoord() < -40) {
+                personsOut.add(p);
+            }
+        }
+        
         for (Vehicle v : vehicles) {
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
@@ -65,24 +80,21 @@ public class Simulator extends PApplet implements ActionListener {
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
+            if(!v.getCurve().isEmpty()){
+            ArrayList<Float> curve = v.getCurve();
+            bezier(curve.get(0), curve.get(1), curve.get(2), curve.get(3), curve.get(4), curve.get(5), curve.get(6), curve.get(7));
+            }
             if (v.getXCoord() > width + 200 || v.getXCoord() < -200
                     || v.getYCoord() > height + 200 || v.getYCoord() < -200) {
                 vehiclesOut.add(v);
             }
-
         }
-
-        for (Person p : persons) {
-            fill(255, 0, 0);
-            image(p.getSprite(), p.getXCoord(), p.getYCoord());
-            p.act();
-
-            if (p.getXCoord() > width + 40 || p.getXCoord() < -40
-                    || p.getYCoord() > height + 40 || p.getYCoord() < -40) {
-                personsOut.add(p);
-            }
+        
+        for(Crossing c : crossings) {
+            System.out.println("occu: " + c.getNumberOfOccupants());
+            c.removeAll();
         }
-
+        
         for (Vehicle out : vehiclesOut) {
 
             if (vehicles.contains(out)) {
@@ -103,18 +115,10 @@ public class Simulator extends PApplet implements ActionListener {
 
     }
 
-    public void setLandscape(Landscape landscape) {
+    public void setLandscape(Landscape landscapex) {
 
-        this.landscape = landscape;
+        this.landscape = landscapex;
 
-    }
-
-    public void setVehicleRate(int rate) {
-        vehicleRate = rate;
-    }
-    
-    public void setPeopleRate(int rate) {
-        peopleRate = rate;
     }
 
     int mouseClicks = 0;
@@ -123,17 +127,17 @@ public class Simulator extends PApplet implements ActionListener {
     public void mousePressed() {
 
       //  if (mouseClicks < 4) {
-        //       System.out.print(mouseX + ", " + mouseY + ", ");
-        //       fl.add(mouseX);
-        //       fl.add(mouseY);
-        //   } else {
-        //       fl.clear();
-        //       mouseClicks = 0;
-        // }
+     //       System.out.print(mouseX + ", " + mouseY + ", ");
+     //       fl.add(mouseX);
+     //       fl.add(mouseY);
+     //   } else {
+     //       fl.clear();
+     //       mouseClicks = 0;
+       // }
         vehicles.add(new Car(landscape.getGrid(), rand));
-        persons.add(new Person(rand));
+        persons.add(new Person(crossings, rand));
+        Person p = new Person(crossings, rand);
     }
-    
 
     @Override
     public void actionPerformed(ActionEvent e) {

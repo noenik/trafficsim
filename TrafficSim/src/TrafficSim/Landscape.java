@@ -11,18 +11,14 @@ public class Landscape extends PApplet {
 
     ArrayList<Square> grid = new ArrayList<>();
     int gridSize = 10;
-
+    ArrayList<Crossing> crossings = new ArrayList<>();
+    
     public void setup() {
 
+        
+        
         size(1000, 1000);
         background(0, 255, 0);
-
-        noLoop();
-
-    }
-
-    public void draw() {
-
         fill(200);
         rectMode(CENTER);
         rect(width / 2, (height / 2) - (75 / 2), 1000, 75);
@@ -42,31 +38,42 @@ public class Landscape extends PApplet {
         ellipse(width / 2, height / 2, 250, 250);
         fill(155);
         ellipse(width / 2, height / 2, 100, 100);
+        fill(255);
+        rect(440, 200, 20, 80);
+        rect(470, 200, 20, 80);
+        rect(500, 200, 20, 80);
+        rect(530, 200, 20, 80);
+        rect(560, 200, 20, 80);
 
+        rect(440, 800, 20, 80);
+        rect(470, 800, 20, 80);
+        rect(500, 800, 20, 80);
+        rect(530, 800, 20, 80);
+        rect(560, 800, 20, 80);
+
+        rect(200, 440, 80, 20);
+        rect(200, 470, 80, 20);
+        rect(200, 500, 80, 20);
+        rect(200, 530, 80, 20);
+        rect(200, 560, 80, 20);
+        
+        rect(800, 440, 80, 20);
+        rect(800, 470, 80, 20);
+        rect(800, 500, 80, 20);
+        rect(800, 530, 80, 20);
+        rect(800, 560, 80, 20);
         makeGrid();
         
-        rectMode(CENTER);
-        fill(255); 
-        rect(440, 200, 20, 80); 
-        rect(470, 200, 20, 80); 
-        rect(500, 200, 20, 80); 
-        rect(530, 200, 20, 80); 
-        rect(560, 200, 20, 80); 
-        rect(440, 800, 20, 80); 
-        rect(470, 800, 20, 80); 
-        rect(500, 800, 20, 80); 
-        rect(530, 800, 20, 80); 
-        rect(560, 800, 20, 80); 
-        rect(200, 440, 80, 20); 
-        rect(200, 470, 80, 20); 
-        rect(200, 500, 80, 20); 
-        rect(200, 530, 80, 20); 
-        rect(200, 560, 80, 20); 
-        rect(800, 440, 80, 20); 
-        rect(800, 470, 80, 20); 
-        rect(800, 500, 80, 20); 
-        rect(800, 530, 80, 20); 
-        rect(800, 560, 80, 20);
+        makeCrossings();
+        
+        
+        noLoop();
+
+    }
+
+    public void draw() {
+
+        
     }
 
     public PImage getLandscape() {
@@ -88,27 +95,29 @@ public class Landscape extends PApplet {
             int rowNum = 0;
             for (int y = 0; y < height; y += 10) {
                 boolean add = false;
-                
+
                 Direction dir;
-                
+
                 if (get(x + 5, y + 5) == dir1Color) {
-                    
-                    if(x > 600 && x < 300)
+
+                    if (x > 600 && x < 300) {
                         dir = Direction.WEST;
-                    else
+                    } else {
                         dir = Direction.SOUTH;
-                    
+                    }
+
                     grid.add(new Square(x, y, colNum, rowNum, gridSize, dir));
-                    
+
                 } else if (get(x + 5, y + 5) == dir2Color) {
-                    
-                    if(x > 600 && x < 400)
+
+                    if (x > 600 && x < 400) {
                         dir = Direction.EAST;
-                    else
+                    } else {
                         dir = Direction.NORTH;
-                    
+                    }
+
                     grid.add(new Square(x, y, colNum, rowNum, gridSize, dir));
-                    
+
                 } else if (get(x + 5, y + 5) == innerRAColor) {
                     grid.add(new Square(x, y, colNum, rowNum, gridSize, Direction.WEST));
                 } else if (get(x + 5, y + 5) == outerRAColor) {
@@ -117,15 +126,29 @@ public class Landscape extends PApplet {
                 rowNum++;
             }
             colNum++;
+
         }
+        
+        
 
 //        for (Square s : grid) {
 //            fill(255, 0, 0);
 //            rect(s.getxStart(), s.getyStart(), 10, 10);
 //        }
     }
+    
+    private void makeCrossings() {
+        Crossing crossingWest = new Crossing(160, 400, 240, 600);
+        crossings.add(crossingWest);
+    }
 
     public ArrayList<Square> getGrid() {
         return grid;
     }
+    
+    public ArrayList<Crossing> getCrossings() {
+        
+        return crossings;
+    }
+    
 }

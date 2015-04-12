@@ -8,17 +8,13 @@ import java.util.Random;
  * @author nikla_000
  */
 public class Car extends Vehicle {
-
-    private final Random rand;
-    private int moved = 0;
-
+    
     public Car(ArrayList<Square> grid, Random rand) {
-
-        super("graphics/bil1.png", grid, rand, 0.008f);
-        this.rand = rand;
-
+        
+        super("graphics/bil1.png", grid, rand);
+        
     }
-
+int moved = 0;
     @Override
     public void act() {
 
@@ -50,23 +46,27 @@ public class Car extends Vehicle {
         
         if (heading == Direction.NORTH) {
             x = 0;
-            y = -speed;
-        } else if (heading == Direction.EAST) {
-            x = speed;
+            y = -4;
+        } else if(heading == Direction.EAST) {
+            x = 4;
             y = 0;
-        } else if (heading == Direction.WEST) {
-            x = -speed;
+        } else if(heading == Direction.WEST) {
+            x = -4;
             y = 0;
-        } else if (heading == Direction.SOUTH) {
+        } else if(heading == Direction.SOUTH) {
             x = 0;
             y = speed;
         }
 
-
-        if (drive) {
-            drive(x, y);
+        for(Square s : fieldOfView) {
+            if(s.getOccupant() != null && !safeDistance(s)) {
+                drive = false;
+                break;
+            }
         }
-
+        if(drive)
+            drive(x, y);
+        
         moved++;
         findOccupied();
         findFieldOfView();
