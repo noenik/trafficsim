@@ -8,13 +8,17 @@ import java.util.Random;
  * @author nikla_000
  */
 public class Car extends Vehicle {
-    
+
+    private final Random rand;
+    private int moved = 0;
+
     public Car(ArrayList<Square> grid, Random rand) {
-        
-        super("graphics/bil1.png", grid, rand);
-        
+
+        super("graphics/bil1.png", grid, rand, 0.008f);
+        this.rand = rand;
+
     }
-int moved = 0;
+
     @Override
     public void act() {
 
@@ -26,7 +30,22 @@ int moved = 0;
 
         speed = (distanceFromCenter / 100) + rand.nextInt(3) - 1;
 
+        if (heading == Direction.NORTH) {
+            x = 0;
+            y = -speed;
+        } else if (heading == Direction.EAST) {
+            x = speed;
+            y = 0;
+        } else if (heading == Direction.WEST) {
+            x = -speed;
+            y = 0;
+        } else if (heading == Direction.SOUTH) {
+            x = 0;
+            y = speed;
+        }
+
         boolean drive = true;
+
         if (distanceFromCenter > 250 && distanceFromCenter < 270) {
             drive = false;
 
@@ -36,37 +55,14 @@ int moved = 0;
             if (s.getOccupant() != null && !safeDistance(s)) {
                 drive = false;
                 break;
-            } else if(s.getOccupant() != null && safeDistance(s) && distanceFromCenter < 270) {
-                drive = true;
-                 speed = 10;
             } else
                 drive = true;
         }
 
-        
-        if (heading == Direction.NORTH) {
-            x = 0;
-            y = -4;
-        } else if(heading == Direction.EAST) {
-            x = 4;
-            y = 0;
-        } else if(heading == Direction.WEST) {
-            x = -4;
-            y = 0;
-        } else if(heading == Direction.SOUTH) {
-            x = 0;
-            y = speed;
+        if (drive) {
+            drive(x, y);
         }
 
-        for(Square s : fieldOfView) {
-            if(s.getOccupant() != null && !safeDistance(s)) {
-                drive = false;
-                break;
-            }
-        }
-        if(drive)
-            drive(x, y);
-        
         moved++;
         findOccupied();
         findFieldOfView();

@@ -28,6 +28,7 @@ public class Simulator extends PApplet implements ActionListener{
     float y = 500;
     int currentFr = 25;
     int vehicleRate = 2;
+    int peopleRate = 5;
 
     @Override
     public void setup() {
@@ -44,9 +45,9 @@ public class Simulator extends PApplet implements ActionListener{
     @Override
     public void draw() {
 
-        if (frameCount % currentFr * vehicleRate == 0) {
-            vehicles.add(new Car(landscape.getGrid(), rand));
-        }
+//        if (frameCount % currentFr * vehicleRate == 0) {
+//            vehicles.add(new Car(landscape.getGrid(), rand));
+//        }
         
         background(landscape.getLandscape());
         noFill();
@@ -76,8 +77,8 @@ public class Simulator extends PApplet implements ActionListener{
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
             //line(width/2, height/2, v.getXCoord(), v.getYCoord());
-//            for(Square s : v.getFOV())
-//                rect(s.getxStart(), s.getyStart(), 10, 10);
+            for(Square s : v.getFOV())
+                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
             if(!v.getCurve().isEmpty()){
@@ -119,6 +120,14 @@ public class Simulator extends PApplet implements ActionListener{
 
         this.landscape = landscapex;
 
+    }
+    
+    public void setVehicleRate(int rate) {
+        vehicleRate = rate;
+    }
+    
+    public void setPeopleRate(int rate) {
+        peopleRate = rate;
     }
 
     int mouseClicks = 0;
