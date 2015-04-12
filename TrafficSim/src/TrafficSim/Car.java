@@ -30,6 +30,24 @@ public class Car extends Vehicle {
 
         speed = (distanceFromCenter / 100) + rand.nextInt(3) - 1;
 
+        boolean drive = true;
+        if (distanceFromCenter > 250 && distanceFromCenter < 270) {
+            drive = false;
+
+        }
+        
+        for (Square s : fieldOfView) {
+            if (s.getOccupant() != null && !safeDistance(s)) {
+                drive = false;
+                break;
+            } else if(s.getOccupant() != null && safeDistance(s) && distanceFromCenter < 270) {
+                drive = true;
+                 speed = 10;
+            } else
+                drive = true;
+        }
+
+        
         if (heading == Direction.NORTH) {
             x = 0;
             y = -speed;
@@ -44,20 +62,6 @@ public class Car extends Vehicle {
             y = speed;
         }
 
-        boolean drive = true;
-
-        if (distanceFromCenter > 250 && distanceFromCenter < 270) {
-            drive = false;
-
-        }
-        
-        for (Square s : fieldOfView) {
-            if (s.getOccupant() != null && !safeDistance(s)) {
-                drive = false;
-                break;
-            } else
-                drive = true;
-        }
 
         if (drive) {
             drive(x, y);

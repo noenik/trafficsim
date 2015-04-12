@@ -34,16 +34,15 @@ public class Simulator extends PApplet implements ActionListener {
         car.resize(100, 0);
 
         frameRate(currentFr);
-
+        noLoop();
 //        vehicles.add(new Car(landscape.getGrid(), rand));
 //        noLoop();
     }
 
     @Override
     public void draw() {
-        if (frameCount % currentFr * 2 == 0) {
+        if (frameCount % currentFr * vehicleRate == 0) {
             vehicles.add(new Car(landscape.getGrid(), rand));
-            System.out.println("lel");
         }
 
         background(landscape.getLandscape());
@@ -62,7 +61,7 @@ public class Simulator extends PApplet implements ActionListener {
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
             //line(width/2, height/2, v.getXCoord(), v.getYCoord());
-//            for(Square s : v.getOccupied())
+//            for(Square s : v.getFOV())
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
@@ -139,11 +138,12 @@ public class Simulator extends PApplet implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "start":
-                
+            case "Start":
+                loop();
+                System.out.println("s");
                 break;
-            case "stop":
-                
+            case "Stop":
+                noLoop();
                 break;
             case "Resume":
                 noLoop();

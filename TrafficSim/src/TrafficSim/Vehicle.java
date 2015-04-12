@@ -311,15 +311,15 @@ public abstract class Vehicle extends PApplet {
 
         for (Square s : grid) {
             if (horizontal) {
-                if (positive && s.getxStart() > x) {
+                if (positive && s.getxStart() > x && s.getyStart() < y) {
                     fieldOfView.add(s);
-                } else if (!positive && s.getxStart() < x) {
+                } else if (!positive && s.getxStart() < x && s.getyStart() > y) {
                     fieldOfView.add(s);
                 }
             } else {
-                if (positive && s.getyStart() > y) {
+                if (positive && s.getyStart() > y && s.getxStart() > x) {
                     fieldOfView.add(s);
-                } else if (!positive && s.getyStart() < y) {
+                } else if (!positive && s.getyStart() < y && s.getxStart() < x) {
                     fieldOfView.add(s);
                 }
             }
@@ -359,12 +359,10 @@ public abstract class Vehicle extends PApplet {
         float distance = dist(x, y, s.getxStart(), s.getyStart());
         Vehicle occupant = s.getOccupant();
         
-        if(!inRoundabout && occupant.inRoundabout() && distance < (200 + (rand.nextInt(40) - 20))) {
+        if(!inRoundabout && occupant.inRoundabout() && distance < (125 + (rand.nextInt(40) - 20))) {
             return false;
-        } else if(inRoundabout) {
-            return true;
-        }else
-            return (distance > 150 && distance > model.width) || headingOpposite(occupant.getHeading());
+        } else
+            return (distance > 75 && distance > model.width) || headingOpposite(occupant.getHeading());
 
     }
 
