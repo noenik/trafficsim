@@ -30,13 +30,14 @@ public class Simulator extends PApplet implements ActionListener{
     int vehicleRate = 2;
     int peopleRate = 5;
     int vehicleOutCount;
+    int time = 0;
 
     @Override
     public void setup() {
         size(1000, 1000);
         car = loadImage("graphics/bil1.png");
         car.resize(100, 0);
-        frameRate(currentFr);
+        frameRate(currentFr*10);
         landscapeImage = landscape.getLandscape();
         crossings = landscape.getCrossings();
         
@@ -47,6 +48,9 @@ public class Simulator extends PApplet implements ActionListener{
     @Override
     public void draw() {
 
+        if(frameCount % currentFr == 0)
+            time++;
+        
         if (frameCount % currentFr * vehicleRate == 0) {
             vehicles.add(new Car(landscape.getGrid(), rand));
         }
@@ -86,7 +90,7 @@ public class Simulator extends PApplet implements ActionListener{
         }
         
         for(Crossing c : crossings) {
-            System.out.println("occu: " + c.getNumberOfOccupants());
+//            System.out.println("occu: " + c.getNumberOfOccupants());
             c.removeAll();
         }
         
@@ -130,7 +134,7 @@ public class Simulator extends PApplet implements ActionListener{
     }
     
     public int getTime() {
-        return frameCount % currentFr;
+        return time;
     }
 
     int mouseClicks = 0;

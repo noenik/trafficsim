@@ -14,7 +14,7 @@ public class Car extends Vehicle {
 
     public Car(ArrayList<Square> grid, Random rand) {
 
-        super("graphics/bil1.png", grid, rand, 0.008f);
+        super("graphics/bil1.png", grid, rand, 0.001f);
         this.rand = rand;
 
     }
@@ -29,7 +29,7 @@ public class Car extends Vehicle {
         float distanceFromCenter = dist(getXCoord(), getYCoord(), 500, 500);
 
         speed = (distanceFromCenter / 100) + rand.nextInt(3) - 1;
-        speed += 5;
+        speed += 10;
         
         if (heading == Direction.NORTH) {
             x = 0;

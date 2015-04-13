@@ -409,7 +409,7 @@ public abstract class Vehicle extends PApplet {
                 turn = false;
             } else {
                 inRoundabout = true;
-                speed += 0.002;
+                speed += 0.001;
                 drawGraphic(a);
             }
 
