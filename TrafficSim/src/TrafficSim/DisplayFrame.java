@@ -29,6 +29,7 @@ public class DisplayFrame extends JFrame {
     private Landscape l;
     private JPanel panel;
     private JFrame panel2;
+    private boolean settingUp = true;
 
     public DisplayFrame() {
         this.setSize(1000, 1000);
@@ -44,14 +45,17 @@ public class DisplayFrame extends JFrame {
         l.init();
         s.setLandscape(l);
         s.init();
-
+        
+        
         this.setVisible(true);
+        
+        
         stats();
     }
     private JLabel vehicleCount;
     private JLabel peopleCount;
 
-    public void stats() {
+    private void stats() {
         panel2 = new JFrame();
         panel2.setSize(250, 250);
         panel2.setVisible(true);

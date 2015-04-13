@@ -128,6 +128,10 @@ public class Simulator extends PApplet implements ActionListener{
     public int getVehicleCount() {
         return vehicleOutCount;
     }
+    
+    public int getTime() {
+        return frameCount % currentFr;
+    }
 
     int mouseClicks = 0;
     ArrayList<Integer> fl = new ArrayList<>();

@@ -12,6 +12,7 @@ public class Landscape extends PApplet {
     ArrayList<Square> grid = new ArrayList<>();
     int gridSize = 10;
     ArrayList<Crossing> crossings = new ArrayList<>();
+    boolean isReady = false;
     
     public void setup() {
 
@@ -66,14 +67,13 @@ public class Landscape extends PApplet {
         
         makeCrossings();
         
-        
+        isReady = true;
         noLoop();
 
     }
 
-    public void draw() {
-
-        
+    public boolean ready() {
+        return isReady;
     }
 
     public PImage getLandscape() {
