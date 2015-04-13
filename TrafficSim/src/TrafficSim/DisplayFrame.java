@@ -55,6 +55,7 @@ public class DisplayFrame extends JFrame {
         panel2 = new JFrame();
         panel2.setSize(250, 250);
         panel2.setVisible(true);
+        panel2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         panel2.setLocationRelativeTo(this);
         panel2.setLayout(new FlowLayout());
         panel2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -63,14 +64,13 @@ public class DisplayFrame extends JFrame {
         JButton resume = new JButton("Resume");
         JButton customStart = new JButton("CustomStart");
         vehicleCount = new JLabel("vehiclecounter");
-        peopleCount = new JLabel("peoplecounter");
-
         panel2.add(startSim);
         panel2.add(stopSim);
         panel2.add(resume);
         panel2.add(customStart);
         panel2.add(vehicleCount);
-        panel2.add(peopleCount);
+        
+        
 
         startSim.addActionListener(s);
         startSim.setActionCommand("Start");
@@ -89,6 +89,9 @@ public class DisplayFrame extends JFrame {
 
             }
         });
+        while(true) {
+            vehicleCount.setText("Number of vehicles passed: " + s.getVehicleCount());
+        }
 
     }
 
@@ -117,5 +120,5 @@ public class DisplayFrame extends JFrame {
             }
         }
     }
-    
+ 
 }

@@ -29,6 +29,7 @@ public class Simulator extends PApplet implements ActionListener{
     int currentFr = 25;
     int vehicleRate = 2;
     int peopleRate = 5;
+    int vehicleOutCount;
 
     @Override
     public void setup() {
@@ -92,6 +93,7 @@ public class Simulator extends PApplet implements ActionListener{
         for (Vehicle out : vehiclesOut) {
 
             if (vehicles.contains(out)) {
+                vehicleOutCount++;
                 vehicles.remove(out);
             }
 
@@ -121,6 +123,10 @@ public class Simulator extends PApplet implements ActionListener{
     
     public void setPeopleRate(int rate) {
         peopleRate = rate;
+    }
+    
+    public int getVehicleCount() {
+        return vehicleOutCount;
     }
 
     int mouseClicks = 0;
