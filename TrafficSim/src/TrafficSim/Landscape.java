@@ -2,6 +2,9 @@ package TrafficSim;
 
 import java.util.ArrayList;
 import processing.core.*;
+import static processing.core.PConstants.CENTER;
+import static processing.core.PConstants.CORNER;
+import static processing.core.PConstants.CORNERS;
 
 /**
  *
@@ -13,11 +16,9 @@ public class Landscape extends PApplet {
     int gridSize = 10;
     ArrayList<Crossing> crossings = new ArrayList<>();
     boolean isReady = false;
-    
+
     public void setup() {
 
-        
-        
         size(1000, 1000);
         background(0, 255, 0);
         fill(200);
@@ -57,17 +58,23 @@ public class Landscape extends PApplet {
         rect(200, 500, 80, 20);
         rect(200, 530, 80, 20);
         rect(200, 560, 80, 20);
-        
+
         rect(800, 440, 80, 20);
         rect(800, 470, 80, 20);
         rect(800, 500, 80, 20);
         rect(800, 530, 80, 20);
         rect(800, 560, 80, 20);
         makeGrid();
-        
+
         makeCrossings();
-        
+
+        //rectMode(CORNERS);
+//        for(Crossing c : crossings) {
+//            rect(c.getXStart(), c.getYStart(), c.getXEnd(), c.getYEnd());
+//        }
+
         isReady = true;
+
         noLoop();
 
     }
@@ -128,27 +135,31 @@ public class Landscape extends PApplet {
             colNum++;
 
         }
-        
-        
 
 //        for (Square s : grid) {
 //            fill(255, 0, 0);
 //            rect(s.getxStart(), s.getyStart(), 10, 10);
 //        }
     }
-    
+
     private void makeCrossings() {
-        Crossing crossingWest = new Crossing(160, 400, 240, 600);
+        Crossing crossingWest = new Crossing(160, 400, 240, 600, 0);
+        Crossing crossingNorth = new Crossing(400, 160, 600, 240, 2);
+        Crossing crossingEast = new Crossing(760, 400, 840, 600, 1);
+        Crossing crossingSouth = new Crossing(400, 760, 600, 840, 3);
         crossings.add(crossingWest);
+        crossings.add(crossingNorth);
+        crossings.add(crossingEast);
+        crossings.add(crossingSouth);
     }
 
     public ArrayList<Square> getGrid() {
         return grid;
     }
-    
+
     public ArrayList<Crossing> getCrossings() {
-        
+
         return crossings;
     }
-    
+
 }

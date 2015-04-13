@@ -1,5 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
+/* To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -18,10 +17,11 @@ public class Crossing {
     int yStart;
     int xEnd;
     int yEnd;
+    int id;
     ArrayList<Person> occupants;
     
-    public Crossing(int xa, int ya, int xb, int yb) {
-        
+    public Crossing(int xa, int ya, int xb, int yb, int id) {
+        this.id = id;
         xStart = xa;
         xEnd = xb;
         yStart = ya;
@@ -57,6 +57,10 @@ public class Crossing {
     
     public void removeAll() {
         occupants.clear();
+    }
+    
+    public int getID() {
+        return id;
     }
     
     

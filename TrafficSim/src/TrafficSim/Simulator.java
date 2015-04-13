@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 import processing.core.*;
+import static processing.core.PConstants.CENTER;
 
 /**
  *
@@ -28,9 +29,10 @@ public class Simulator extends PApplet implements ActionListener{
     float y = 500;
     int currentFr = 25;
     int vehicleRate = 2;
-    int peopleRate = 5;
+    int peopleRate = 10;
     int vehicleOutCount;
     int time = 0;
+    int runTime = 60;
 
     @Override
     public void setup() {
@@ -42,18 +44,24 @@ public class Simulator extends PApplet implements ActionListener{
         crossings = landscape.getCrossings();
         
 //        vehicles.add(new Car(landscape.getGrid(), rand));
-//        noLoop();
+        noLoop();
     }
 
     @Override
     public void draw() {
 
+        if((time % runTime == 0) && time != 0)
+            noLoop();
+        
         if(frameCount % currentFr == 0)
             time++;
+
         
         if (frameCount % currentFr * vehicleRate == 0) {
-            vehicles.add(new Car(landscape.getGrid(), rand));
+            vehicles.add(new Car(landscape.getGrid(), rand, crossings));
         }
+        if(frameCount % currentFr * peopleRate == 0)
+            persons.add(new Person(crossings, rand));
         
         background(landscape.getLandscape());
         
@@ -63,7 +71,7 @@ public class Simulator extends PApplet implements ActionListener{
             s.setOccupant(null);
         }
 
-        
+        //vehicles.add(new Car(landscape.getGrid(), rand, crossings));
         for (Person p : persons) {
             fill(255, 0, 0);
             image(p.getSprite(), p.getXCoord(), p.getYCoord());
@@ -150,7 +158,7 @@ public class Simulator extends PApplet implements ActionListener{
      //       fl.clear();
      //       mouseClicks = 0;
        // }
-        vehicles.add(new Car(landscape.getGrid(), rand));
+        vehicles.add(new Car(landscape.getGrid(), rand, crossings));
         persons.add(new Person(crossings, rand));
         Person p = new Person(crossings, rand);
     }

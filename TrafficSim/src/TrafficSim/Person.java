@@ -3,6 +3,9 @@ package TrafficSim;
 import java.util.ArrayList;
 import java.util.Random;
 import processing.core.PApplet;
+import static processing.core.PConstants.CENTER;
+import static processing.core.PConstants.HALF_PI;
+import static processing.core.PConstants.PI;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
@@ -179,16 +182,16 @@ public class Person extends PApplet {
             actCount = 0;
         }
         if(xStart > xEnd) {
-            xCoord--;
+            xCoord=xCoord-5;
         }
         if(xStart < xEnd) {
-            xCoord++;
+            xCoord=xCoord+5;
         }
         if(yStart < yEnd) {
-            yCoord++;
+            yCoord=yCoord+5;
         }
         if(yStart > yEnd) {
-            yCoord--;
+            yCoord=yCoord-5;
         }
         
         for(Crossing c : crossings){

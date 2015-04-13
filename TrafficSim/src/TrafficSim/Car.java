@@ -12,11 +12,11 @@ public class Car extends Vehicle {
     private final Random rand;
     private int moved = 0;
 
-    public Car(ArrayList<Square> grid, Random rand) {
+    public Car(ArrayList<Square> grid, Random rand, ArrayList<Crossing> crossings) {
 
-        super("graphics/bil1.png", grid, rand, 0.001f);
+        super("graphics/bil1.png", grid, rand, 0.08f, crossings);
+
         this.rand = rand;
-
     }
 
     @Override
@@ -24,6 +24,7 @@ public class Car extends Vehicle {
 
         float x = 0;
         float y = 0;
+
         float speed = 0;
 
         float distanceFromCenter = dist(getXCoord(), getYCoord(), 500, 500);
@@ -32,6 +33,7 @@ public class Car extends Vehicle {
         speed += 10;
         
         if (heading == Direction.NORTH) {
+
             x = 0;
             y = -speed;
         } else if (heading == Direction.EAST) {
@@ -47,17 +49,24 @@ public class Car extends Vehicle {
 
         boolean drive = true;
 
+        
+
         if (distanceFromCenter > 250 && distanceFromCenter < 270) {
             drive = false;
 
         }
-        
+
         for (Square s : fieldOfView) {
             if (s.getOccupant() != null && !safeDistance(s)) {
+
                 drive = false;
                 break;
-            } else
+            } else {
                 drive = true;
+            }
+        }
+        if (checkForCrossings() == false) {
+            drive = false;
         }
 
         if (drive) {
