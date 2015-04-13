@@ -418,12 +418,12 @@ public abstract class Vehicle extends PApplet {
         float distance = dist(x, y, s.getxStart(), s.getyStart());
         Vehicle occupant = s.getOccupant();
         
-        if(!inRoundabout && occupant.inRoundabout() && distance < (200 + (rand.nextInt(40) - 20))) {
+        if(!inRoundabout && occupant.inRoundabout() && distance < (150 + (rand.nextInt(40) - 20))) {
             return false;
         } else if(inRoundabout) {
             return true;
         }else
-            return (distance > 150 && distance > model.width) || headingOpposite(occupant.getHeading());
+            return (distance > 50 && distance > model.width) || headingOpposite(occupant.getHeading());
 
     }
 

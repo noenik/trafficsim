@@ -32,7 +32,7 @@ public class Simulator extends PApplet implements ActionListener{
     int peopleRate = 10;
     int vehicleOutCount;
     int time = 0;
-    int runTime = 60;
+    int runTime = 600;
 
     @Override
     public void setup() {
@@ -57,10 +57,10 @@ public class Simulator extends PApplet implements ActionListener{
             time++;
 
         
-        if (frameCount % currentFr * vehicleRate == 0) {
+        if (frameCount % 12 == 0) {
             vehicles.add(new Car(landscape.getGrid(), rand, crossings));
         }
-        if(frameCount % currentFr * peopleRate == 0)
+        if(frameCount % 125 == 0)
             persons.add(new Person(crossings, rand));
         
         background(landscape.getLandscape());
