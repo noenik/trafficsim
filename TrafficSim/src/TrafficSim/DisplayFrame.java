@@ -54,6 +54,7 @@ public class DisplayFrame extends JFrame {
     }
     private JLabel vehicleCount;
     private JLabel peopleCount;
+    private JLabel time;
 
     private void stats() {
         panel2 = new JFrame();
@@ -68,11 +69,13 @@ public class DisplayFrame extends JFrame {
         JButton resume = new JButton("Resume");
         JButton customStart = new JButton("CustomStart");
         vehicleCount = new JLabel("vehiclecounter");
+        time = new JLabel("Time");
         panel2.add(startSim);
         panel2.add(stopSim);
         panel2.add(resume);
         panel2.add(customStart);
         panel2.add(vehicleCount);
+        panel2.add(time);
         
         
 
@@ -95,6 +98,7 @@ public class DisplayFrame extends JFrame {
         });
         while(true) {
             vehicleCount.setText("Number of vehicles passed: " + s.getVehicleCount());
+            time.setText("TIME: " + s.getTime());
         }
 
     }
