@@ -27,6 +27,7 @@ public class Person extends PApplet {
     private float yEnd;
     private float amount;
     private int actCount;
+    private boolean alive;
     private final PGraphics mp;
     private final Random rand;
     private final ArrayList<Crossing> crossings;
@@ -49,6 +50,7 @@ public class Person extends PApplet {
         crossings = crossingsX;
         inCrossing = false;
         this.rand = rand;
+        alive = true;
         initiate();
     }
 
@@ -221,5 +223,13 @@ public class Person extends PApplet {
 
     public float getYCoord() {
         return yCoord;
+    }
+    
+    public void setDead() {
+        alive = false;
+    }
+    
+    public boolean isAlive() {
+        return alive;
     }
 }

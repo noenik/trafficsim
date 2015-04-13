@@ -16,6 +16,7 @@ public class Landscape extends PApplet {
     int gridSize = 10;
     ArrayList<Crossing> crossings = new ArrayList<>();
     boolean isReady = false;
+    PImage blood = loadImage("graphics/Untitled.png");
 
     public void setup() {
 
@@ -160,6 +161,11 @@ public class Landscape extends PApplet {
     public ArrayList<Crossing> getCrossings() {
 
         return crossings;
+    }
+    
+    public void drawBlood(float x, float y) {
+        fill(255, 0, 0);
+        image(blood, x, y);
     }
 
 }
