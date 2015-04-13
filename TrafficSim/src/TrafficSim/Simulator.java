@@ -29,6 +29,7 @@ public class Simulator extends PApplet implements ActionListener{
     int currentFr = 25;
     int vehicleRate = 2;
     int peopleRate = 5;
+    int vehicleOutCount;
 
     @Override
     public void setup() {
@@ -77,8 +78,8 @@ public class Simulator extends PApplet implements ActionListener{
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
             //line(width/2, height/2, v.getXCoord(), v.getYCoord());
-            for(Square s : v.getFOV())
-                rect(s.getxStart(), s.getyStart(), 10, 10);
+//            for(Square s : v.getFOV())
+//                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
             if(!v.getCurve().isEmpty()){
@@ -99,6 +100,7 @@ public class Simulator extends PApplet implements ActionListener{
         for (Vehicle out : vehiclesOut) {
 
             if (vehicles.contains(out)) {
+                vehicleOutCount++;
                 vehicles.remove(out);
             }
 
@@ -128,6 +130,10 @@ public class Simulator extends PApplet implements ActionListener{
     
     public void setPeopleRate(int rate) {
         peopleRate = rate;
+    }
+    
+    public int getVehicleCount() {
+        return vehicleOutCount;
     }
 
     int mouseClicks = 0;
