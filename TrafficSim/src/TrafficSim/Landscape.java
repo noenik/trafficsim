@@ -2,6 +2,9 @@ package TrafficSim;
 
 import java.util.ArrayList;
 import processing.core.*;
+import static processing.core.PConstants.CENTER;
+import static processing.core.PConstants.CORNER;
+import static processing.core.PConstants.CORNERS;
 
 /**
  *
@@ -65,7 +68,10 @@ public class Landscape extends PApplet {
         makeGrid();
         
         makeCrossings();
-        
+        rectMode(CORNERS);
+//        for(Crossing c : crossings) {
+//            rect(c.getXStart(), c.getYStart(), c.getXEnd(), c.getYEnd());
+//        }
         
         noLoop();
 
@@ -138,8 +144,14 @@ public class Landscape extends PApplet {
     }
     
     private void makeCrossings() {
-        Crossing crossingWest = new Crossing(160, 400, 240, 600);
+        Crossing crossingWest = new Crossing(160, 400, 240, 600, 0);
+        Crossing crossingNorth = new Crossing(400, 160, 600, 240, 1);
+        Crossing crossingEast = new Crossing(760, 400, 840, 600, 2);
+        Crossing crossingSouth = new Crossing(400, 760, 600, 840, 3);
         crossings.add(crossingWest);
+        crossings.add(crossingNorth);
+        crossings.add(crossingEast);
+        crossings.add(crossingSouth);
     }
 
     public ArrayList<Square> getGrid() {

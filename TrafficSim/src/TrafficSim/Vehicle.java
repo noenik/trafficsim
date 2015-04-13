@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import processing.core.PApplet;
+import static processing.core.PApplet.atan2;
+import static processing.core.PApplet.dist;
+import static processing.core.PConstants.CENTER;
+import static processing.core.PConstants.HALF_PI;
+import static processing.core.PConstants.PI;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
@@ -28,7 +33,7 @@ public abstract class Vehicle extends PApplet {
     private final ArrayList<Square> grid;
     private ArrayList<Square> currentOccupied;
     private ArrayList<Float> endCurve;
-
+    private final ArrayList<Crossing> crossings;
     protected ArrayList<Square> fieldOfView;
 
     private final HashMap<Direction, ArrayList<Float>> paths;
@@ -37,14 +42,14 @@ public abstract class Vehicle extends PApplet {
     protected Direction heading;
     protected Direction path;
 
-    public Vehicle(String modelUrl, ArrayList<Square> grid, Random rand) {
+    public Vehicle(String modelUrl, ArrayList<Square> grid, Random rand, ArrayList<Crossing> crossings) {
 
         init();
         this.rand = rand;
         this.grid = grid;
         model = loadImage(modelUrl);
         model.resize(0, 100);
-
+        this.crossings = crossings;
         mg = createGraphics(200, 200);
 
         currentOccupied = new ArrayList<>();
@@ -106,7 +111,7 @@ public abstract class Vehicle extends PApplet {
     private void setOrientation(Direction dir, boolean rotate) {
         amount = 0;
 
-        if (dir == Direction.EAST){
+        if (dir == Direction.EAST) {
             xEnd = 1000;
             yEnd = 532;
         } else if (dir == Direction.WEST) {
@@ -238,6 +243,53 @@ public abstract class Vehicle extends PApplet {
 
         return list;
 
+    }
+
+    protected boolean checkForCrossings() {
+        boolean atCrossing = false;
+        int cID = 4;
+        if (x > 40 && x < 60 && heading == Direction.EAST) {
+            atCrossing = true;
+            cID = 0;
+        }
+        if (x > 240 && x < 300 && heading == Direction.WEST) {
+            atCrossing = true;
+            cID = 0;
+        }
+        if (x > 940 && x < 960 && heading == Direction.WEST) {
+            atCrossing = true;
+            cID = 1;
+        }
+        if (x > 700 && x < 760 && heading == Direction.EAST) {
+            atCrossing = true;
+            cID = 1;
+        }
+        if (y > 20 && y < 50 && heading == Direction.SOUTH) {
+            atCrossing = true;
+            cID = 2;
+        }
+        if (y > 240 && y < 300 && heading == Direction.NORTH) {
+            atCrossing = true;
+            cID = 2;
+        }
+        if (y > 950 && y < 980 && heading == Direction.NORTH) {
+            atCrossing = true;
+            cID = 3;
+        }
+        if (y > 700 && y < 760 && heading == Direction.SOUTH) {
+            atCrossing = true;
+            cID = 3;
+        }
+        if (atCrossing == true) {
+            for (Crossing c : crossings) {
+                if (c.getID() == cID) {
+                    if (c.getNumberOfOccupants() > 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     protected void findFieldOfView() {

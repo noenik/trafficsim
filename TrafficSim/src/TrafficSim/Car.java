@@ -9,9 +9,10 @@ import java.util.Random;
  */
 public class Car extends Vehicle {
     
-    public Car(ArrayList<Square> grid, Random rand) {
+    
+    public Car(ArrayList<Square> grid, Random rand, ArrayList<Crossing> crossings) {
         
-        super("graphics/bil1.png", grid, rand);
+        super("graphics/bil1.png", grid, rand, crossings);
         
     }
 int moved = 0;
@@ -20,7 +21,6 @@ int moved = 0;
 
         float x = 0;
         float y = 0;
-        
         if(heading == Direction.NORTH) {
             x = 0;
             y = -4;
@@ -36,6 +36,9 @@ int moved = 0;
         }
         
         boolean drive = true;
+        if(checkForCrossings() == false) {
+            drive = false;
+        }
         for(Square s : fieldOfView) {
             if(s.getOccupant() != null && !safeDistance(s)) {
                 drive = false;

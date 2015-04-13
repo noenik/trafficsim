@@ -3,6 +3,7 @@ package TrafficSim;
 import java.util.ArrayList;
 import java.util.Random;
 import processing.core.*;
+import static processing.core.PConstants.CENTER;
 
 /**
  *
@@ -51,7 +52,7 @@ public class Simulator extends PApplet {
             s.setOccupant(null);
         }
 
-        
+        //vehicles.add(new Car(landscape.getGrid(), rand, crossings));
         for (Person p : persons) {
             fill(255, 0, 0);
             image(p.getSprite(), p.getXCoord(), p.getYCoord());
@@ -125,7 +126,7 @@ public class Simulator extends PApplet {
      //       fl.clear();
      //       mouseClicks = 0;
        // }
-        vehicles.add(new Car(landscape.getGrid(), rand));
+        vehicles.add(new Car(landscape.getGrid(), rand, crossings));
         persons.add(new Person(crossings, rand));
         Person p = new Person(crossings, rand);
     }
