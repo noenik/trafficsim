@@ -27,6 +27,10 @@ public abstract class Vehicle extends PApplet {
     private float f;
     private float a;
     private float amount;
+    private float speed;
+    private boolean inRoundabout;
+    private boolean turn = false;
+    private boolean end = false;
     private final PImage model;
     private final PGraphics mg;
     private final Random rand;
@@ -42,14 +46,24 @@ public abstract class Vehicle extends PApplet {
     protected Direction heading;
     protected Direction path;
 
-    public Vehicle(String modelUrl, ArrayList<Square> grid, Random rand, ArrayList<Crossing> crossings) {
+
+    /**
+     * Constructor
+     * @param modelUrl
+     * @param grid
+     * @param rand 
+     */
+    public Vehicle(String modelUrl, ArrayList<Square> grid, Random rand, float speed, ArrayList<Crossing> crossings) {
 
         init();
         this.rand = rand;
         this.grid = grid;
+        this.speed = speed;
         model = loadImage(modelUrl);
         model.resize(0, 100);
         this.crossings = crossings;
+        model.resize(0, 70);
+
         mg = createGraphics(200, 200);
 
         currentOccupied = new ArrayList<>();
@@ -64,40 +78,47 @@ public abstract class Vehicle extends PApplet {
         setOrientation(map.get(path), false);
 
     }
-
-    private void initiate() {
+    
+    private void drawGraphic(Float rotation) {
         mg.beginDraw();
-
-        int randomInt = rand.nextInt(4);
-
+        mg.background(0, 0);
         mg.imageMode(CENTER);
         mg.translate(mg.width / 2, mg.height / 2);
+        mg.rotate(rotation);
+        mg.image(model, 0, 0);
+        mg.endDraw();
+    }
+
+    /**
+     * Sets the initial values and orientation.
+     */
+    private void initiate() {
+
+        int randomInt = rand.nextInt(4);
 
         switch (randomInt) {
 
             case 0:
                 x = -200;
-                y = 525;
+                y = 532;
                 setOrientation(Direction.EAST, true);
                 break;
             case 1:
-                x = 425;
+                x = 468;
                 y = -200;
                 setOrientation(Direction.SOUTH, true);
                 break;
             case 2:
                 x = 1200;
-                y = 475;
+                y = 468;
                 setOrientation(Direction.WEST, true);
                 break;
             case 3:
-                x = 525;
+                x = 532;
                 y = 1200;
                 setOrientation(Direction.NORTH, true);
 
         }
-        mg.image(model, 0, 0);
-        mg.endDraw();
 
         randomPathFrom(heading);
 //        if(heading == Direction.WEST)
@@ -108,32 +129,42 @@ public abstract class Vehicle extends PApplet {
 //            zToPi = (float) (3*(Math.PI/2));
     }
 
+    /**
+     * Sets the heading field and rotates the image to point the correct way.
+     * @param dir
+     * @param rotate 
+     */
     private void setOrientation(Direction dir, boolean rotate) {
         amount = 0;
 
-        if (dir == Direction.EAST) {
-            xEnd = 1000;
+
+        if (dir == Direction.EAST){
+            xEnd = 1200;
             yEnd = 532;
         } else if (dir == Direction.WEST) {
             amount = PI;
-            xEnd = 0;
+            xEnd = -200;
             yEnd = 468;
         } else if (dir == Direction.NORTH) {
             amount = HALF_PI * 3;
             xEnd = 532;
-            yEnd = 0;
+            yEnd = -200;
         } else if (dir == Direction.SOUTH) {
             amount = HALF_PI;
             xEnd = 468;
-            yEnd = 1000;
+            yEnd = 1200;
         }
 
         if (rotate) {
             heading = dir;
-            mg.rotate(amount);
+            drawGraphic(amount);
         }
     }
 
+    /**
+     * Assigns a random path to spawned vehicle.
+     * @param dir 
+     */
     private void randomPathFrom(Direction dir) {
 
         int randomNum = rand.nextInt(3);
@@ -194,6 +225,9 @@ public abstract class Vehicle extends PApplet {
 
     }
 
+    /**
+     * Fills the hash map with the paths and the associated bezier array.
+     */
     private void fillPaths() {
 
         paths.put(Direction.EASTTONORTH, makeArray(703, 464, 620, 423, 540, 365, 530, 292));
@@ -211,6 +245,9 @@ public abstract class Vehicle extends PApplet {
 
     }
 
+    /**
+     * Maps the final heading to the path.
+     */
     private void fillHeading() {
         map.put(Direction.EASTTONORTH, Direction.NORTH);
         map.put(Direction.WESTTONORTH, Direction.NORTH);
@@ -227,6 +264,18 @@ public abstract class Vehicle extends PApplet {
 
     }
 
+    /**
+     * Makes and returns an arraylist of float values for bezier.
+     * @param startX
+     * @param startY
+     * @param c1X
+     * @param c1Y
+     * @param c2X
+     * @param c2Y
+     * @param endX
+     * @param endY
+     * @return 
+     */
     private ArrayList<Float> makeArray(float startX, float startY, float c1X,
             float c1Y, float c2X, float c2Y, float endX, float endY) {
 
@@ -245,10 +294,11 @@ public abstract class Vehicle extends PApplet {
 
     }
 
+
     protected boolean checkForCrossings() {
         boolean atCrossing = false;
         int cID = 4;
-        if (x > 40 && x < 60 && heading == Direction.EAST) {
+        if (x > 60 && x < 100 && heading == Direction.EAST) {
             atCrossing = true;
             cID = 0;
         }
@@ -264,7 +314,7 @@ public abstract class Vehicle extends PApplet {
             atCrossing = true;
             cID = 1;
         }
-        if (y > 20 && y < 50 && heading == Direction.SOUTH) {
+        if (y > 60 && y < 100 && heading == Direction.SOUTH) {
             atCrossing = true;
             cID = 2;
         }
@@ -292,6 +342,11 @@ public abstract class Vehicle extends PApplet {
         return true;
     }
 
+
+    /**
+     * Finds and assigns a field of view for the vehicle.
+     */
+
     protected void findFieldOfView() {
 
         boolean horizontal = false;
@@ -313,17 +368,17 @@ public abstract class Vehicle extends PApplet {
             positive = false;
         }
 
-        for (Square s : grid) {
+       for (Square s : grid) {
             if (horizontal) {
-                if (positive && s.getxStart() > x) {
+                if (positive && s.getxStart() > x && s.getyStart() < y) {
                     fieldOfView.add(s);
-                } else if (!positive && s.getxStart() < x) {
+                } else if (!positive && s.getxStart() < x && s.getyStart() > y) {
                     fieldOfView.add(s);
                 }
             } else {
-                if (positive && s.getyStart() > y) {
+                if (positive && s.getyStart() > y && s.getxStart() > x) {
                     fieldOfView.add(s);
-                } else if (!positive && s.getyStart() < y) {
+                } else if (!positive && s.getyStart() < y && s.getxStart() < x) {
                     fieldOfView.add(s);
                 }
             }
@@ -331,6 +386,9 @@ public abstract class Vehicle extends PApplet {
 
     }
 
+    /**
+     * Finds and assigns the portion of the grid that the vehicle is currently occupying.
+     */
     protected void findOccupied() {
         currentOccupied.clear();
         for (Square s : grid) {
@@ -350,14 +408,30 @@ public abstract class Vehicle extends PApplet {
 
     }
 
+    /**
+     * Determines whether or not an objects is at a safe distance. 
+     * @param s
+     * @return 
+     */
     protected boolean safeDistance(Square s) {
 
         float distance = dist(x, y, s.getxStart(), s.getyStart());
-
-        return (distance > 100 && distance > model.width) || headingOpposite(s.getOccupant().getHeading());
+        Vehicle occupant = s.getOccupant();
+        
+        if(!inRoundabout && occupant.inRoundabout() && distance < (200 + (rand.nextInt(40) - 20))) {
+            return false;
+        } else if(inRoundabout) {
+            return true;
+        }else
+            return (distance > 150 && distance > model.width) || headingOpposite(occupant.getHeading());
 
     }
 
+    /**
+     * Determines whether or not an object is heading at the opposite direction.
+     * @param dir
+     * @return 
+     */
     private boolean headingOpposite(Direction dir) {
 
         return (heading == Direction.EAST && dir == Direction.WEST)
@@ -367,51 +441,44 @@ public abstract class Vehicle extends PApplet {
 
     }
 
+    /**
+     * Act method. Must be implemented for all vehicles.
+     */
     public abstract void act();
 
-    boolean turn = false;
-    boolean end = false;
 
+    /**
+     * Makes the vehicle move.
+     * @param amountX
+     * @param amountY 
+     */
     public void drive(float amountX, float amountY) {
 
         float distFromCenter = dist(500, 500, x, y);
 
-        if (!end && distFromCenter < 200 && distFromCenter > 125 || turn) {
+        if (!end && distFromCenter < 250 && distFromCenter > 125 || turn) {
             turn = true;
 
-            mg.beginDraw();
-            mg.imageMode(CENTER);
-            mg.translate(mg.width / 2, mg.height / 2);
-            mg.background(0, 0);
-
-            if (!driveThroughCurve(paths.get(path), 0.01f)) {
+            if (!driveThroughCurve(paths.get(path), speed)) {
                 setOrientation(map.get(path), true);
                 makeEndCurve(paths.get(path).get(6), paths.get(path).get(7));
                 f = 0;
+                inRoundabout = false;
                 end = true;
                 turn = false;
             } else {
-                mg.rotate(a);
+                inRoundabout = true;
+                speed += 0.002;
+                drawGraphic(a);
             }
-
-            mg.image(model, 0, 0);
-            mg.endDraw();
 
         } else if (end) {
-
-            mg.beginDraw();
-            mg.imageMode(CENTER);
-            mg.translate(mg.width / 2, mg.height / 2);
-            mg.background(0, 0);
-
-            if (!driveThroughCurve(endCurve, 0.1f)) {
+            
+            if (!driveThroughCurve(endCurve, 0.05f)) {
                 end = false;
             } else {
-                mg.rotate(a);
+                drawGraphic(a);
             }
-
-            mg.image(model, 0, 0);
-            mg.endDraw();
 
         } else {
             f = 0;
@@ -420,18 +487,27 @@ public abstract class Vehicle extends PApplet {
         }
     }
 
+    /**
+     * Moves the vehicle through the proper bezier curve through the roundabout.
+     * @param points
+     * @param speed
+     * @return 
+     */
     private boolean driveThroughCurve(ArrayList<Float> points, float speed) {
-
+        
         if (f < 1) {
             float startX = points.get(0);
             float startY = points.get(1);
-            float c1X = points.get(2);
-            float c1Y = points.get(3);
-            float c2X = points.get(4);
-            float c2Y = points.get(5);
+            float c1X = points.get(2) + 2*rand.nextFloat() - 1;
+            float c1Y = points.get(3) + 2*rand.nextFloat() - 1;
+            float c2X = points.get(4) + 2*rand.nextFloat() - 1;
+            float c2Y = points.get(5) + 2*rand.nextFloat() - 1;
             float endX = points.get(6);
             float endY = points.get(7);
-
+            
+            if(dist(startX, startY, endX, endY) < 250)
+                speed += speed*2;
+                        
             x = bezierPoint(startX, c1X, c2X, endX, f);
             y = bezierPoint(startY, c1Y, c2Y, endY, f);
             tx = bezierTangent(startX, c1X, c2X, endX, f);
@@ -449,8 +525,14 @@ public abstract class Vehicle extends PApplet {
 
     }
 
+    /**
+     * Creates a bezier curve from the end point of the roundabouts path and to
+     * the end of the road.
+     * @param pointX
+     * @param pointY 
+     */
     private void makeEndCurve(float pointX, float pointY) {
-        System.out.println("X: " + xEnd + " Y: " + yEnd);
+        
         float space = dist(pointX, pointY, xEnd, yEnd) / 3;
         endCurve.add(pointX);
         endCurve.add(pointY);
@@ -488,6 +570,10 @@ public abstract class Vehicle extends PApplet {
         endCurve.add(xEnd);
         endCurve.add(yEnd);
 
+    }
+    
+    public boolean inRoundabout() {
+        return inRoundabout;
     }
 
     public Direction getHeading() {

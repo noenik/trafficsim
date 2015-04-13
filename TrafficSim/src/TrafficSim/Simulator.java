@@ -1,5 +1,7 @@
 package TrafficSim;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 import processing.core.*;
@@ -9,7 +11,7 @@ import static processing.core.PConstants.CENTER;
  *
  * @author nikla_000
  */
-public class Simulator extends PApplet {
+public class Simulator extends PApplet implements ActionListener{
 
     ArrayList<Vehicle> vehicles = new ArrayList<>();
     ArrayList<Vehicle> vehiclesOut = new ArrayList<>();
@@ -25,27 +27,34 @@ public class Simulator extends PApplet {
     PImage car;
     float x = 0;
     float y = 500;
+    int currentFr = 25;
+    int vehicleRate = 2;
+    int peopleRate = 5;
+    int vehicleOutCount;
 
     @Override
     public void setup() {
         size(1000, 1000);
         car = loadImage("graphics/bil1.png");
         car.resize(100, 0);
+        frameRate(currentFr);
+        landscapeImage = landscape.getLandscape();
         crossings = landscape.getCrossings();
-        frameRate(25);
-
+        
 //        vehicles.add(new Car(landscape.getGrid(), rand));
 //        noLoop();
     }
 
     @Override
     public void draw() {
-        background(landscape.getLandscape());
-        noFill();
-        if (fl.size() >= 8) {
-            bezier(fl.get(0), fl.get(1), fl.get(2), fl.get(3), fl.get(4), fl.get(5), fl.get(6), fl.get(7));
-        }
 
+        if (frameCount % currentFr * vehicleRate == 0) {
+            vehicles.add(new Car(landscape.getGrid(), rand, crossings));
+            persons.add(new Person(crossings, rand));
+        }
+        
+        background(landscape.getLandscape());
+        
         imageMode(CENTER);
 
         for (Square s : landscape.getGrid()) {
@@ -68,14 +77,10 @@ public class Simulator extends PApplet {
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
             //line(width/2, height/2, v.getXCoord(), v.getYCoord());
-//            for(Square s : v.getOccupied())
+//            for(Square s : v.getFOV())
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
-            if(!v.getCurve().isEmpty()){
-            ArrayList<Float> curve = v.getCurve();
-            bezier(curve.get(0), curve.get(1), curve.get(2), curve.get(3), curve.get(4), curve.get(5), curve.get(6), curve.get(7));
-            }
             if (v.getXCoord() > width + 200 || v.getXCoord() < -200
                     || v.getYCoord() > height + 200 || v.getYCoord() < -200) {
                 vehiclesOut.add(v);
@@ -83,13 +88,14 @@ public class Simulator extends PApplet {
         }
         
         for(Crossing c : crossings) {
-            System.out.println("occu: " + c.getNumberOfOccupants());
+            //System.out.println("occu: " + c.getNumberOfOccupants());
             c.removeAll();
         }
         
         for (Vehicle out : vehiclesOut) {
 
             if (vehicles.contains(out)) {
+                vehicleOutCount++;
                 vehicles.remove(out);
             }
 
@@ -112,6 +118,22 @@ public class Simulator extends PApplet {
         this.landscape = landscapex;
 
     }
+    
+    public void setVehicleRate(int rate) {
+        vehicleRate = rate;
+    }
+    
+    public void setPeopleRate(int rate) {
+        peopleRate = rate;
+    }
+    
+    public int getVehicleCount() {
+        return vehicleOutCount;
+    }
+    
+    public int getTime() {
+        return frameCount % currentFr;
+    }
 
     int mouseClicks = 0;
     ArrayList<Integer> fl = new ArrayList<>();
@@ -131,4 +153,19 @@ public class Simulator extends PApplet {
         Person p = new Person(crossings, rand);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "Start":
+                loop();
+                System.out.println("s");
+                break;
+            case "Stop":
+                noLoop();
+                break;
+            case "Resume":
+                noLoop();
+                break;
+}
+    }
 }
