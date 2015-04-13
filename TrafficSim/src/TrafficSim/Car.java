@@ -29,7 +29,8 @@ public class Car extends Vehicle {
         float distanceFromCenter = dist(getXCoord(), getYCoord(), 500, 500);
 
         speed = (distanceFromCenter / 100) + rand.nextInt(3) - 1;
-
+        speed += 5;
+        
         if (heading == Direction.NORTH) {
             x = 0;
             y = -speed;

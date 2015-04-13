@@ -397,7 +397,7 @@ public abstract class Vehicle extends PApplet {
 
         float distFromCenter = dist(500, 500, x, y);
 
-        if (!end && distFromCenter < 200 && distFromCenter > 125 || turn) {
+        if (!end && distFromCenter < 250 && distFromCenter > 125 || turn) {
             turn = true;
 
             if (!driveThroughCurve(paths.get(path), speed)) {

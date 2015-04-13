@@ -57,6 +57,7 @@ public class DisplayFrame extends JFrame {
         panel2.setVisible(true);
         panel2.setLocationRelativeTo(this);
         panel2.setLayout(new FlowLayout());
+        panel2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JButton startSim = new JButton("Start");
         JButton stopSim = new JButton("Stop");
         JButton resume = new JButton("Resume");

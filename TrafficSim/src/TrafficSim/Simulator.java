@@ -36,6 +36,7 @@ public class Simulator extends PApplet implements ActionListener{
         car = loadImage("graphics/bil1.png");
         car.resize(100, 0);
         frameRate(currentFr);
+        landscapeImage = landscape.getLandscape();
         crossings = landscape.getCrossings();
         
 //        vehicles.add(new Car(landscape.getGrid(), rand));
@@ -45,16 +46,12 @@ public class Simulator extends PApplet implements ActionListener{
     @Override
     public void draw() {
 
-//        if (frameCount % currentFr * vehicleRate == 0) {
-//            vehicles.add(new Car(landscape.getGrid(), rand));
-//        }
+        if (frameCount % currentFr * vehicleRate == 0) {
+            vehicles.add(new Car(landscape.getGrid(), rand));
+        }
         
         background(landscape.getLandscape());
-        noFill();
-        if (fl.size() >= 8) {
-            bezier(fl.get(0), fl.get(1), fl.get(2), fl.get(3), fl.get(4), fl.get(5), fl.get(6), fl.get(7));
-        }
-
+        
         imageMode(CENTER);
 
         for (Square s : landscape.getGrid()) {
@@ -77,14 +74,10 @@ public class Simulator extends PApplet implements ActionListener{
             fill(255, 0, 0);
             image(v.getModel(), v.getXCoord(), v.getYCoord());
             //line(width/2, height/2, v.getXCoord(), v.getYCoord());
-            for(Square s : v.getFOV())
-                rect(s.getxStart(), s.getyStart(), 10, 10);
+//            for(Square s : v.getFOV())
+//                rect(s.getxStart(), s.getyStart(), 10, 10);
             v.act();
 
-            if(!v.getCurve().isEmpty()){
-            ArrayList<Float> curve = v.getCurve();
-            bezier(curve.get(0), curve.get(1), curve.get(2), curve.get(3), curve.get(4), curve.get(5), curve.get(6), curve.get(7));
-            }
             if (v.getXCoord() > width + 200 || v.getXCoord() < -200
                     || v.getYCoord() > height + 200 || v.getYCoord() < -200) {
                 vehiclesOut.add(v);
