@@ -64,7 +64,7 @@ public abstract class Vehicle extends PApplet {
         this.crossings = crossings;
         model.resize(0, 70);
 
-        mg = createGraphics(200, 200);
+        mg = createGraphics(125, 125);
 
         currentOccupied = new ArrayList<>();
         fieldOfView = new ArrayList<>();
@@ -423,7 +423,7 @@ public abstract class Vehicle extends PApplet {
         } else if(inRoundabout) {
             return true;
         }else
-            return (distance > 50 && distance > model.width) || headingOpposite(occupant.getHeading());
+            return (distance > 30 && distance > model.width) || headingOpposite(occupant.getHeading());
 
     }
 
@@ -469,7 +469,7 @@ public abstract class Vehicle extends PApplet {
             } else {
                 inRoundabout = true;
                 speed += 0.001;
-                drawGraphic(a);
+//                drawGraphic(a);
             }
 
         } else if (end) {
@@ -477,7 +477,7 @@ public abstract class Vehicle extends PApplet {
             if (!driveThroughCurve(endCurve, 0.05f)) {
                 end = false;
             } else {
-                drawGraphic(a);
+//                drawGraphic(a);
             }
 
         } else {

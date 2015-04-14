@@ -47,10 +47,10 @@ public class DisplayFrame extends JFrame {
         s.init();
         
         
-        this.setVisible(true);
+//        this.setVisible(true);
         
         
-        stats();
+//        stats();
     }
     private JLabel vehicleCount;
     private JLabel peopleCount;

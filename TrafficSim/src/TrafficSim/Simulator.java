@@ -32,39 +32,51 @@ public class Simulator extends PApplet implements ActionListener {
     int vehicleOutCount;
     int time = 0;
     int runTime = 600;
+    
+    int vehicleOutTotal;
+    int simNum = 1;
 
     @Override
     public void setup() {
         size(1000, 1000);
         car = loadImage("graphics/bil1.png");
         car.resize(100, 0);
-        frameRate(currentFr * 10);
+        frameRate(2500);
         landscapeImage = landscape.getLandscape();
         crossings = landscape.getCrossings();
 
 //        vehicles.add(new Car(landscape.getGrid(), rand));
-        noLoop();
+//        noLoop();
     }
 
     @Override
     public void draw() {
-
+        
+        if(simNum >= 100){
+            noLoop();
+            System.out.println(vehicleOutTotal/simNum);
+        }
+            
         if ((time % runTime == 0) && time != 0) {
             noLoop();
+            System.out.println("Done with sim " + simNum + "... Vehicle count: " + vehicleOutCount);
+            restart();
         }
 
         if (frameCount % currentFr == 0) {
             time++;
+//            System.out.println(vehicles.size());
         }
         
-        if (frameCount % 12 == 0) {
-            vehicles.add(new Car(landscape.getGrid(), rand, crossings));
+        if (frameCount % 10 == 0) {
+            Car newCar = new Car(landscape.getGrid(), rand, crossings);
+            vehicles.add(newCar);
         }
         if(frameCount % 125 == 0)
             persons.add(new Person(crossings, rand));
         
 
-        background(landscape.getLandscape());
+//        background(landscape.getLandscape());
 
         imageMode(CENTER);
 
@@ -77,12 +89,12 @@ public class Simulator extends PApplet implements ActionListener {
             for (Vehicle v : vehicles) {
                 if ((p.getXCoord() < v.getXCoord() + 30 && p.getXCoord() > v.getXCoord() - 30) && (p.getYCoord() < v.getYCoord() + 30 && p.getYCoord() > v.getYCoord() - 30)) {
                     p.setDead();
-                    System.out.println("dieeee");
+//                    System.out.println("dieeee");
                     landscape.drawBlood(p.getXCoord(), p.getYCoord());
                 }
             }
             fill(255, 0, 0);
-            image(p.getSprite(), p.getXCoord(), p.getYCoord());
+//            image(p.getSprite(), p.getXCoord(), p.getYCoord());
             if (p.isAlive()) {
                 p.act();
                 if (p.getXCoord() > width + 40 || p.getXCoord() < -40
@@ -96,7 +108,7 @@ public class Simulator extends PApplet implements ActionListener {
 
         for (Vehicle v : vehicles) {
             fill(255, 0, 0);
-            image(v.getModel(), v.getXCoord(), v.getYCoord());
+//            image(v.getModel(), v.getXCoord(), v.getYCoord());
             //line(width/2, height/2, v.getXCoord(), v.getYCoord());
 //            for(Square s : v.getFOV())
 //                rect(s.getxStart(), s.getyStart(), 10, 10);
@@ -172,6 +184,20 @@ public class Simulator extends PApplet implements ActionListener {
         vehicles.add(new Car(landscape.getGrid(), rand, crossings));
         persons.add(new Person(crossings, rand));
         Person p = new Person(crossings, rand);
+    }
+    
+    private void restart() {
+        vehicleOutTotal += vehicleOutCount;
+        simNum++;
+        
+        vehicles.clear();
+        vehiclesOut.clear();
+        vehicleOutCount = 0;
+        persons.clear();
+        personsOut.clear();
+        time = 0;
+        
+        loop();
     }
 
     @Override
